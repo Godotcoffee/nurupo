@@ -16,19 +16,22 @@ class RestController {
 
     @GetMapping("/user/{name}")
     fun getUser(@PathVariable("name") name: String): ResponseJSON {
-        val user = userDao.getUserByName(name)
+        val user = userDao.findByUsername(name)
         return ResponseJSON(user, user != null)
     }
 
     @PostMapping("/user/{name}/{password}")
     fun postUser(@PathVariable name: String, @PathVariable password: String): ResponseJSON {
-        val ok = userDao.addUser(User(0, name, password))
-        return ResponseJSON(null, ok, "")
+        try {
+            userDao.save(User(0, name, password))
+        } catch (e: Exception) {
+            return ResponseJSON(null, false, "")
+        }
+        return ResponseJSON(null, true, "")
     }
 
     @GetMapping("/users")
     fun getAllUsers(): ResponseJSON {
-        return ResponseJSON(userDao.getAllUsers())
+        return ResponseJSON(userDao.findAll())
     }
-
 }

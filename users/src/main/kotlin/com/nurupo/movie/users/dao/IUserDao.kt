@@ -1,12 +1,8 @@
 package com.nurupo.movie.users.dao
 
 import com.nurupo.movie.users.entity.User
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface IUserDao {
-
-    fun getAllUsers(): List<User>
-
-    fun getUserByName(name: String): User?
-
-    fun addUser(user: User): Boolean
+interface IUserDao : JpaRepository<User, Int> {
+    fun findByUsername(name: String): User?
 }
