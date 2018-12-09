@@ -24,12 +24,9 @@ class APIGateway {
         val result = restTemplate.postForObject(
                 "http://${ServiceName.NURUPO_MOVIE_SPARK}/sum",
                 HttpEntity(jsonStr, HttpHeaders().let { it.contentType = MediaType.APPLICATION_JSON_UTF8; it}),
-                String::class.java
+                ResponseJSON::class.java
         )
-        var sum: Int? = null
-        try {
-            sum = JSONObject(result).getInt("obj")
-        } catch (ignored: Exception) { }
-        return ResponseJSON(if (sum != null) 0 else 1, sum, if (sum == null) "RETURN NULL" else null)
+
+        return if (result != null) result else ResponseJSON(-255, null, "Return Null")
     }
 }
