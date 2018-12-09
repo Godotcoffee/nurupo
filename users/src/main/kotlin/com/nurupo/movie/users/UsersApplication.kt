@@ -1,4 +1,4 @@
-package com.nurupo.movie.users
+package com.nurupo.movie.usersrestTemplate
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
