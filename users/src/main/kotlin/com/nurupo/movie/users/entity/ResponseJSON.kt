@@ -1,7 +1,14 @@
 package com.nurupo.movie.users.entity
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class ResponseJSON(
-        val status: Int = 0,
-        val obj: Any?,
-        val msg: String? = null
+        @JsonProperty("status")
+        var status: Int = 0,
+
+        @JsonProperty("obj")
+        var obj: Any? = null,
+
+        @JsonProperty("msg")
+        var msg: String? = null
 )
