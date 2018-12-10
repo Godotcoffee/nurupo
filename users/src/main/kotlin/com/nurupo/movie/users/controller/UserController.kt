@@ -38,4 +38,15 @@ class UserController {
         return ResponseJSON(0)
     }
 
+    @PostMapping("/loginCheck", produces = ["application/json;charset=utf-8;"])
+    fun loginCheck(@Valid @RequestBody user: User, bindingResult: BindingResult): ResponseJSON {
+        if (bindingResult.hasErrors()) {
+            return ResponseJSON(-1, bindingResult.allErrors, "Valid failed")
+        }
+        val hashedPassword = userDao.findByUsername(user.username)?.hashedPassword ?: return ResponseJSON(404, msg = "User not existed")
+        if (hashedPassword != userPasswordHash.hash(user)) {
+            return ResponseJSON(401, msg = "Invalid failed")
+        }
+        return ResponseJSON(0)
+    }
 }
