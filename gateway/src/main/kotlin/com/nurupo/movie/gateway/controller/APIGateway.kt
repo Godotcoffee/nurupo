@@ -26,7 +26,6 @@ class APIGateway {
                 HttpEntity(jsonStr, HttpHeaders().let { it.contentType = MediaType.APPLICATION_JSON_UTF8; it}),
                 ResponseJSON::class.java
         )
-
-        return if (result != null) result else ResponseJSON(-255, null, "Return Null")
+        return result ?: ResponseJSON(-255, msg="NURUPO~ GA!")
     }
 }

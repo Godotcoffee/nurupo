@@ -1,8 +1,15 @@
 package com.nurupo.movie.spark.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ResponseJSON {
+    @JsonProperty("status")
     private int status = 0;
+
+    @JsonProperty("obj")
     private Object obj = null;
+
+    @JsonProperty("msg")
     private String msg = null;
 
     public ResponseJSON() {
