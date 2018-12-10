@@ -37,6 +37,5 @@ class UserController {
         }
         return ResponseJSON(0)
     }
-
     
 }
