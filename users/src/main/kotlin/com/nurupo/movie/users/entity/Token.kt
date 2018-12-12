@@ -23,5 +23,8 @@ data class Token(
         var startDate: Date,
 
         @Column(name = "D_TIME", nullable = false)
-        var durationDate: Duration
+        var durationDate: Duration,
+
+        @Column(name = "LOGOUT", nullable = false)
+        var logout: Boolean
 )

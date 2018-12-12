@@ -49,7 +49,7 @@ class UserControllerV1 {
             user.hashedPassword = userPasswordHash.hash(user)
             user.id = 0
             userDao.save(user)
-            return ResponseJSON(0)
+            return ResponseJSON(0, mapOf("userId" to user.id))
         } catch (e: Exception) {
             return ResponseJSON(-255, e.message,  "Exception")
         }
@@ -69,7 +69,7 @@ class UserControllerV1 {
 
             val tokenKey = UUID.randomUUID()
 
-            val newToken = Token(0, tokenKey, userData.id, Date(), userConfig.userLoginDuration)
+            val newToken = Token(0, tokenKey, userData.id, Date(), userConfig.userLoginDuration, false)
             tokenDao.findByUserId(userData.id)?.apply { newToken.id = id }
             tokenDao.save(newToken)
             return ResponseJSON(0, mapOf("userId" to userData.id, "token" to newToken.tokenKey))
@@ -83,9 +83,24 @@ class UserControllerV1 {
         try {
             val uuid = UUID.fromString(tokenStr)
             val check = tokenDao.findByUserId(userId)?.run {
-                uuid == tokenKey && startDate.time + durationDate.toMillis() >= Date().time
+                !logout && uuid == tokenKey && startDate.time + durationDate.toMillis() >= Date().time
             } ?: false
             return ResponseJSON(0, check)
+        } catch (e: Exception) {
+            return ResponseJSON(-255, e.message, "Exception")
+        }
+    }
+
+    @GetMapping("/logout/{userId}")
+    fun logout(@PathVariable("userId") userId: Int): ResponseJSON {
+        try {
+            tokenDao.findByUserId(userId)?.apply {
+                if (logout) {
+                    logout = true
+                    tokenDao.save(this)
+                }
+            }
+            return ResponseJSON(0)
         } catch (e: Exception) {
             return ResponseJSON(-255, e.message, "Exception")
         }

@@ -13,7 +13,8 @@ data class Login(
         var username: String = "",
 
         @get:Size(min = 4, max = 16, message = "Length of password must from 4 to 16")
-        @get:Pattern(regexp = "^[a-zA-Z0-9\\t\\n ./<>?;:\"'`!@#\$%^&*()\\[\\]{}_+=|\\\\-~,]+$", message = "Password is bad")
+        // Except for [space, \n, \t]
+        @get:Pattern(regexp = "^[a-zA-Z0-9./<>?;:\"'`!@#\$%^&*()\\[\\]{}_+=|\\\\-~,]+$", message = "Password is bad")
         @JsonProperty("password")
         var password: String = ""
 )
