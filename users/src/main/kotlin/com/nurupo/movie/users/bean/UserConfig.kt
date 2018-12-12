@@ -5,5 +5,6 @@ import java.time.Duration
 
 @Component
 class UserConfig {
-    val USER_LOGIN_VALID_DURATION = Duration.ofSeconds(30)
+    val userLoginDuration: Duration = Duration.ofHours(2)
+    val maxPageSize = 100
 }

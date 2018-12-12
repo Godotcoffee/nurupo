@@ -23,7 +23,8 @@ data class User(
 
         @Transient
         @get:Size(min = 4, max = 16, message = "Length of password must from 4 to 16")
-        @get:Pattern(regexp = "^[a-zA-Z0-9\\t\\n ./<>?;:\"'`!@#\$%^&*()\\[\\]{}_+=|\\\\-~,]+$", message = "Password is bad")
+        // Except for [space, \n, \t]
+        @get:Pattern(regexp = "^[a-zA-Z0-9./<>?;:\"'`!@#\$%^&*()\\[\\]{}_+=|\\\\-~,]+$", message = "Password is bad")
         @JsonProperty("password")
         var password: String = "",
 
@@ -31,11 +32,11 @@ data class User(
         @JsonIgnore
         var hashedPassword: String = "",
 
-        @Column(name = "EMAIL")
+        @Column(name = "EMAIL", unique = true, nullable = false)
         @get:NotBlank(message = "Can not be empty")
         @get:Email(message = "Check your email address again!")
         @JsonProperty("email")
-        var email: String? = null,
+        var email: String = "",
 
         @Column(name = "STATUS")
         @JsonProperty("userStatus")
