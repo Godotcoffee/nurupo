@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html class="no-js" lang="en">
+<head>
+    <title>Log In - Yelp</title>
+    <link rel="stylesheet" type="text/css" media="all" href="css/www-pkg.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/landing_picture.css">
+    <style type="text/css">
+        #d__fFH {
+            position: absolute;
+            top: -5000px;
+            left: -5000px
+        }
+
+        #d__fF {
+            font-family: serif;
+            font-size: 200px;
+            visibility: hidden
+        }
+
+        #tezdavew {
+            display: none !important
+        }
+    </style>
+</head>
+<body id="yelp_main_body" class="jquery country-sg logged-out">
+    <div id="wrap" class="lang-en">
+        <div class="page-header">
+            <div class="main-header main-content-wrap js-main-header webview-hidden main-header--simple main-header--lsat">
+                <div class="main-header_wrapper">
+                    <div class="content-container">
+                        <div class="arrange arrange--18 arrange--middle main-header_arrange">
+                            <div class="arrange_unit arrange_unit--fill align-middle main-header--full_arrange_unit main-header_search-container">
+                                <div class="main-header_logo js-analytics-click" id="logo" data-analytics-label="logo">
+                                    <a href="/">Yelp</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-content-wrap main-content-wrap--full">
+            <div id="super-container" class="content-container">
+                <div class="clearfix layout-block layout-h row--responsive">
+                    <div class="column column-alpha column--responsive">
+                        <div class="signup-wrapper">
+                            <div class="signup-flow on-flow-start">
+                                <div class="login">
+                                    <div class="signup-form-container">
+                                        <div class="header">
+                                            <h2>Log In to Yelp</h2>
+                                            <p class="subheading">New to Yelp? <a class="signup-link u-pseudo-link"
+                                                    href="/signup.html">Sign up</a></p>
+                                        </div>
+                                        <form action="/login" class="yform" id="ajax-login" method="POST">
+                                            <input type="hidden" name="csrftok" class="csrftok" value="375469e40ab07332020572167b95479357a0f398f5c6f04ba638fd5822b551d2">
+                                            <label class="placeholder-sub">Email</label>
+                                            <input id="email" name="email" placeholder="Email" required="required" type="email"
+                                                value="">
+                                            <label class="placeholder-sub">Password</label>
+                                            <input id="password" name="password" placeholder="Password" required="required"
+                                                type="password" value="">
+                                            <div class="forgot-password">
+                                                <small><a class="forgot-link" href="forgetpass.html">Forgot password?</a></small></small>
+                                            </div>
+                                            <div class="captcha login-captcha"></div>
+                                            <button type="submit" value="submit" class="ybtn ybtn--primary ybtn--big submit ybtn-full"><span>Log
+                                                    In</span></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column column-beta responsive-visible-large-block">
+                        <div class="picture-container">
+                            <img src="image/signup_illustration.png" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
