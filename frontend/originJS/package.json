@@ -1,10 +1,10 @@
 {
   "name": "frontend",
-  "version": "v1",
+  "version": "",
   "dependencies": {
     "http-server": "^0.11.1"
   },
   "scripts": {
-  	"server" : "http-server -p 7000"
+    "server": "http-server -p 7000"
   }
 }
