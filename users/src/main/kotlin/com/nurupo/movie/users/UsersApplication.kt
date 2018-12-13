@@ -8,12 +8,7 @@ import javax.annotation.PostConstruct
 
 @EnableDiscoveryClient
 @SpringBootApplication
-class UsersApplication {
-    @PostConstruct
-    fun setTimezone() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-    }
-}
+class UsersApplication
 
 fun main(args: Array<String>) {
     runApplication<UsersApplication>(*args)
