@@ -5,10 +5,14 @@ import com.nurupo.movie.movie.dao.IMovieDao;
 import com.nurupo.movie.movie.entity.Movie;
 import com.nurupo.movie.movie.entity.ResponseJSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -93,5 +97,54 @@ public class MovieListController {
         result.put("movies", moviePage);
 
         return new ResponseJSON(0, result);
+    }
+
+    @GetMapping(value = "/init")
+    public ResponseJSON initMovie() {
+        Resource resource = new ClassPathResource("data/movies.csv");
+        try {
+            File file = resource.getFile();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            List<Movie> movieList = new ArrayList<>();
+            boolean readFirstLine = false;
+
+            int incorrectNum = 0;
+            String line = "";
+            while((line = br.readLine()) != null) {
+                if (!readFirstLine) {
+                    readFirstLine = true;
+                    continue;
+                }
+                String[] tempStr = line.split(",(?! )");
+                if (tempStr.length != 3) {
+                    incorrectNum++;
+                } else {
+                    tempStr[1] = tempStr[1].replaceAll("\"", "");
+                    tempStr[1] = tempStr[1].trim();
+                    String name = tempStr[1].substring(0, tempStr[1].length() - 6);
+                    String yearStr = tempStr[1].substring(tempStr[1].length() - 5, tempStr[1].length() - 1);
+                    System.out.println(tempStr[1] + "*" + name + "*" + yearStr);
+                    String cover = "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg";
+                    int year = 0;
+                    try {
+                        year = Integer.parseInt(yearStr);
+                    } catch (NumberFormatException e) {
+                        year = 2018;
+                    }
+                    Movie newMovie = new Movie(tempStr[0], name, year, tempStr[2], cover);
+                    movieList.add(newMovie);
+                }
+            }
+            br.close();
+            movieDao.saveAll(movieList);
+
+            return new ResponseJSON(0, null, String.valueOf(incorrectNum));
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+            return new ResponseJSON(1, null);
+        } catch(IOException e) {
+            e.printStackTrace();
+            return new ResponseJSON(2, null);
+        }
     }
 }

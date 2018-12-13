@@ -1,0 +1,23 @@
+#h-logo {
+    background-image: none;
+    color: white;
+    cursor: pointer;
+}
+
+#movieList {
+    margin-top: 20px;
+}
+
+.h-movie-card {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.h-card-body {
+    height: 50px;
+    padding: 0px!important;
+}
+
+.h-card-body p {
+    text-align: center;
+}

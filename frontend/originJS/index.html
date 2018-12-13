@@ -1,6 +1,12 @@
 <!doctype html>
 <head>
     <link rel="stylesheet" href="css/homepage-main-pkg.css">
+    <link rel="stylesheet" href="css/movie.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="js/config.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <title>Restaurants, Dentists, Bars, Beauty Salons, Doctors - Yelp</title>
     <style type="text/css">
         #d__fFH {
@@ -19,6 +25,73 @@
             display: none !important
         }
     </style>
+    <script>
+        $(document).ready(function() {
+            var data = [
+                {
+                    "name": "Toy Story",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Jumanji",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BZTk2ZmUwYmEtNTcwZS00YmMyLWFkYjMtNTRmZDA3YWExMjc2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UY268_CR10,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Grumpier Old Men",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BMjQxM2YyNjMtZjUxYy00OGYyLTg0MmQtNGE2YzNjYmUyZTY1XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Waiting to Exhale",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BYzcyMDY2YWQtYWJhYy00OGQ2LTk4NzktYWJkNDYwZWJmY2RjXkEyXkFqcGdeQXVyMTA0MjU0Ng@@._V1_UX182_CR0,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Father of the Bride Part II",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BOTEyNzg5NjYtNDU4OS00MWYxLWJhMTItYWU4NTkyNDBmM2Y0XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Heat",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BNDc0YTQ5NGEtM2NkYS00MWRhLThiNzAtNmY3NWU3YzNkMjIyXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX182_CR0,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Sabrina",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BYjQ5ZjQ0YzQtOGY3My00MWVhLTgzNWItOTYwMTE5N2ZiMDUyXkEyXkFqcGdeQXVyNjUwMzI2NzU@._V1_UY268_CR1,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Tom and Huck",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BN2ZkZTMxOTAtMzg1Mi00M2U0LWE2NWItZDg4YmQyZjVkMDdhXkEyXkFqcGdeQXVyNTM5NzI0NDY@._V1_UX182_CR0,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Sudden Death",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BN2NjYWE5NjMtODlmZC00MjJhLWFkZTktYTJlZTI4YjVkMGNmXkEyXkFqcGdeQXVyNDc2NjEyMw@@._V1_UY268_CR0,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "GoldenEye",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BMzk2OTg4MTk1NF5BMl5BanBnXkFtZTcwNjExNTgzNA@@._V1_UX182_CR0,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "American President, The",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BMTI5NDU2NDYzOF5BMl5BanBnXkFtZTYwNDk5MDI5._V1_UY268_CR4,0,182,268_AL_.jpg"
+                },
+                {
+                    "name": "Dracula: Dead and Loving It",
+                    "cover": "https://m.media-amazon.com/images/M/MV5BZWQ0ZDFmYzMtZGMyMi00NmYxLWE0MGYtYzM2ZGNhMTE1NTczL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMjM5ODMxODc@._V1_UX182_CR0,0,182,268_AL_.jpg"
+                }
+            ];
+            $(data).each(function(i, n) {
+                var outDiv = $('<div class="col-sm-2"></div>');
+                var cardDiv = $('<div class="card h-movie-card"></div>');
+                var coverImg = $('<img src="' + n['cover'] + '" alt="' + n['name'] + '" class="card-img-top"/>');
+                var cardBodyDiv = $('<div class="card-body h-card-body"></div>')
+                var nameP = $('<p class="card-text"></p>').text(n['name']);
+
+                cardDiv.append(coverImg);
+                cardBodyDiv.append(nameP);
+                cardDiv.append(cardBodyDiv);
+                outDiv.append(cardDiv);
+                $('#movieList').append(outDiv);
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="y-container homepage-hero" style="background-image: url(image/index-bg.jpg)">
@@ -65,8 +138,8 @@
             </div>
             <div class="homepage-hero_inner">
                 <div class="u-text-centered">
-                    <h1 class="homepage-hero_logo homepage-hero_logo--winter" id="logo">
-                        <a href="/">Yelp</a>
+                    <h1 class="homepage-hero_logo homepage-hero_logo--winter" id="h-logo">
+                        Nurupo
                     </h1>
                 </div>
                 <form method="get" action="/search" id="header_find_form" class="business-search-form main-search yform u-space-b0 js-business-search-form"
@@ -80,7 +153,7 @@
                                         <span class="pseudo-input_text business-search-form_input-text">Find</span>
                                         <span class="pseudo-input_field-holder">
                                             <input autocomplete="off" id="find_desc" maxlength="64" name="find_desc"
-                                                placeholder="burgers, barbers, spas, handymen…" value="" class="pseudo-input_field business-search-form_input-field"
+                                                placeholder="Toy Story, Jumanji…" value="" class="pseudo-input_field business-search-form_input-field"
                                                 aria-autocomplete="list" tabindex="1">
                                         </span>
                                     </div>
@@ -95,11 +168,29 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row" id="movieList">
+
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     <div class="main-content-wrap main-content-wrap--separated">
         <div class="content-container">
             <div class="main-footer webview-hidden">
                 <small class="main-footer_copyright">
-                    Copyright © 2004–2018 Yelp Inc. Yelp, and related marks are registered trademarks of Yelp.
+                    Copyright © 2004–2018 Nurupo Inc. Nurupo, and related marks are registered trademarks of Nurupo.
                 </small>
             </div>
         </div>
