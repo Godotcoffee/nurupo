@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
+@CrossOrigin
 @RestController
 @RequestMapping("/{v}/user")
 class UserAPIController {
@@ -123,6 +124,6 @@ class UserAPIController {
     }
 
     private fun loginValid(resp: ResponseJSON?): Boolean {
-        return resp != null && resp.status == 0 && resp.obj == true
+        return resp != null && resp.status == 0 && (resp.obj == true || "true".equals(resp.obj?.toString() ?: "false", true))
     }
 }
