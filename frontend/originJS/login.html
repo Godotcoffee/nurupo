@@ -5,6 +5,8 @@
     <link rel="stylesheet" type="text/css" media="all" href="css/www-pkg.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/landing_picture.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/userManager.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/config.js"></script>
     <style type="text/css">
         #d__fFH {
             position: absolute;
@@ -22,6 +24,59 @@
             display: none !important
         }
     </style>
+    <script>
+        $(document).ready(function(){
+            $('#signin-button').on('click', function(){
+                $.ajax({
+                    type: "POST",
+                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.login,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    data: JSON.stringify({
+                        "username": $("#username").val(),
+                        "password": $("#password").val()
+                    }),
+                    success: function(data) {
+                        let outDiv = $('<div class="alert" role="alert"></div>');
+                        let strong = $('<strong></strong>').text('success!');
+                        let span = $('<p></p>').text('You have been signed in successfully!');
+                        if(data['status'] == 0) {
+                            outDiv.addClass('alert-success');
+                            window.setTimeout(function() {
+                                $(location).attr('href', '/index.html');
+                            }, 4000);
+                        } else {
+                            strong.text('error!');
+                            span.text(data['msg']);
+                            outDiv.addClass('alert-secondary');
+                        }
+                        outDiv.append(strong);
+                        outDiv.append(span);
+                        $('.h-alert').append(outDiv);
+                        window.setTimeout(function() {
+                            $('.alert').fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove();
+                            });
+                        }, 2000);
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+                        let outDiv = $('<div class="alert alert-secondary" role="alert"></div>');
+                        let strong = $('<strong></strong>').text('error!');
+                        let span = $('<p></p>').text("Can't connect to server");
+                        outDiv.append(strong);
+                        outDiv.append(span);
+                        $('.h-alert').append(outDiv);
+                        window.setTimeout(function() {
+                            $('.alert').fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove();
+                            });
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body id="yelp_main_body" class="jquery country-sg logged-out">
     <div id="wrap" class="lang-en">
@@ -53,10 +108,10 @@
                                             <p class="subheading">New to Nurupo? <a class="signup-link u-pseudo-link"
                                                     href="/signup.html">Sign up</a></p>
                                         </div>
-                                        <form action="/login" class="yform" id="ajax-login" method="POST">
+                                        <div class="yform signup-form  city-hidden" id="signin-form">
                                             <input type="hidden" name="csrftok" class="csrftok" value="375469e40ab07332020572167b95479357a0f398f5c6f04ba638fd5822b551d2">
                                             <label class="placeholder-sub">Email</label>
-                                            <input id="email" name="email" placeholder="Email" required="required" type="email"
+                                            <input id="username" name="username" placeholder="Username" required="required" type="text"
                                                 value="">
                                             <label class="placeholder-sub">Password</label>
                                             <input id="password" name="password" placeholder="Password" required="required"
@@ -65,9 +120,9 @@
                                                 <small><a class="forgot-link" href="forgetpass.html">Forgot password?</a></small></small>
                                             </div>
                                             <div class="captcha login-captcha"></div>
-                                            <button type="submit" value="submit" class="ybtn ybtn--primary ybtn--big submit ybtn-full"><span>Log
+                                            <button id="signin-button" type="submit" value="Sign Up" class="ybtn ybtn--primary ybtn--big disable-on-submit submit signup-button" style="width:100%"><span>Log
                                                     In</span></button>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -81,6 +136,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="h-alert">
+
     </div>
 </body>
 

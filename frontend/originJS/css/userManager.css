@@ -6,3 +6,11 @@
     text-decoration:none;
     color: black;
 }
+
+.h-alert {
+    position: absolute;
+    top: 40px;
+    width: 400px;
+    right: 0px;
+    padding: 5px;
+}

@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/v1/movie")
 public class MovieListController {
@@ -87,14 +85,34 @@ public class MovieListController {
     @GetMapping(value = "/all", produces = {"application/json;charset=utf-8;"})
     public ResponseJSON getAllMovie(
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "pageSize", defaultValue = "0") int pageSize) {
+            @RequestParam(value = "pageSize", defaultValue = "0") int pageSize,
+            @RequestParam(value = "year", defaultValue = "") String year,
+            @RequestParam(value = "genres", defaultValue = "") String genres) {
         page = Math.max(page, 0);
-        pageSize = Math.min(Math.max(pageSize, 10), MovieConfig.MAX_PAGE_SIZE);
+        pageSize = Math.min(Math.max(pageSize, 12), MovieConfig.MAX_PAGE_SIZE);
         Map<String, Object> result = new LinkedHashMap<>();
 
-
-        Page<Movie> moviePage = movieDao.findAll(PageRequest.of(page, pageSize));
+//        Page<Movie> moviePage = movieDao.findAll(PageRequest.of(page, pageSize));
+//        List<Movie> moviePage = movieDao.findAllByYearContainingAndGenresContaining(year, genres);
+        Page<Movie> moviePage = movieDao.findAllMovieByType(year, genres, PageRequest.of(page, pageSize));
         result.put("movies", moviePage);
+
+        return new ResponseJSON(0, result);
+    }
+
+    @GetMapping(value = "/type", produces = {"application/json;charset=utf-8;"})
+    public ResponseJSON getAllType(){
+        Map<String, Object> result = new LinkedHashMap<>();
+        List<Integer> allYear = movieDao.findDistinctYearType();
+        result.put("years", allYear);
+
+        List<String> allGenres = movieDao.findDistinctGenresType();
+        Set<String> genresSet = new LinkedHashSet<>();
+        allGenres.forEach(item -> {
+            String[] genresArr = item.split("\\|");
+            genresSet.addAll(Arrays.asList(genresArr));
+        });
+        result.put("genres", genresSet);
 
         return new ResponseJSON(0, result);
     }
@@ -103,9 +121,9 @@ public class MovieListController {
     public ResponseJSON initMovie() {
         Resource resource = new ClassPathResource("data/movies.csv");
         try {
-            File file = resource.getFile();
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader(resource.getFile()));
             List<Movie> movieList = new ArrayList<>();
+            Map<String, String> coverMap = getCoverHashMap();
             boolean readFirstLine = false;
 
             int incorrectNum = 0;
@@ -119,13 +137,14 @@ public class MovieListController {
                 if (tempStr.length != 3) {
                     incorrectNum++;
                 } else {
-                    tempStr[1] = tempStr[1].replaceAll("\"", "");
-                    tempStr[1] = tempStr[1].trim();
+                    tempStr[1] = tempStr[1].replaceAll("\"", "").trim();
                     String name = tempStr[1].substring(0, tempStr[1].length() - 6);
                     String yearStr = tempStr[1].substring(tempStr[1].length() - 5, tempStr[1].length() - 1);
-                    System.out.println(tempStr[1] + "*" + name + "*" + yearStr);
                     String cover = "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg";
-                    int year = 0;
+                    if (coverMap.containsKey(tempStr[0])) {
+                        cover = coverMap.get(tempStr[0]);
+                    }
+                    int year;
                     try {
                         year = Integer.parseInt(yearStr);
                     } catch (NumberFormatException e) {
@@ -141,10 +160,27 @@ public class MovieListController {
             return new ResponseJSON(0, null, String.valueOf(incorrectNum));
         } catch(FileNotFoundException e) {
             e.printStackTrace();
-            return new ResponseJSON(1, null);
+            return new ResponseJSON(1, null, "file not found");
         } catch(IOException e) {
             e.printStackTrace();
-            return new ResponseJSON(2, null);
+            return new ResponseJSON(2, null, "io exception");
         }
+    }
+
+    private Map<String, String> getCoverHashMap() throws IOException {
+        Map<String, String> coverMap = new LinkedHashMap<>();
+        Resource resource = new ClassPathResource("data/cover.csv");
+        BufferedReader br = new BufferedReader(new FileReader(resource.getFile()));
+        String line = "";
+        while((line = br.readLine()) != null) {
+            String[] tempStr = line.split(",(?=\")");
+            if (tempStr.length != 2) {
+                continue;
+            }
+            tempStr[1] = tempStr[1].replaceAll("\"", "").trim();
+            coverMap.put(tempStr[0], tempStr[1]);
+        }
+
+        return coverMap;
     }
 }

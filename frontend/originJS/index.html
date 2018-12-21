@@ -4,92 +4,147 @@
     <link rel="stylesheet" href="css/movie.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="js/config.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <title>Restaurants, Dentists, Bars, Beauty Salons, Doctors - Yelp</title>
-    <style type="text/css">
-        #d__fFH {
-            position: absolute;
-            top: -5000px;
-            left: -5000px
-        }
-
-        #d__fF {
-            font-family: serif;
-            font-size: 200px;
-            visibility: hidden
-        }
-
-        #szeteduzvdyxwqvdffebfxtecevstdecxuacv {
-            display: none !important
-        }
-    </style>
     <script>
         $(document).ready(function() {
-            var data = [
-                {
-                    "name": "Toy Story",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_UX182_CR0,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Jumanji",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BZTk2ZmUwYmEtNTcwZS00YmMyLWFkYjMtNTRmZDA3YWExMjc2XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UY268_CR10,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Grumpier Old Men",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BMjQxM2YyNjMtZjUxYy00OGYyLTg0MmQtNGE2YzNjYmUyZTY1XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Waiting to Exhale",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BYzcyMDY2YWQtYWJhYy00OGQ2LTk4NzktYWJkNDYwZWJmY2RjXkEyXkFqcGdeQXVyMTA0MjU0Ng@@._V1_UX182_CR0,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Father of the Bride Part II",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BOTEyNzg5NjYtNDU4OS00MWYxLWJhMTItYWU4NTkyNDBmM2Y0XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Heat",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BNDc0YTQ5NGEtM2NkYS00MWRhLThiNzAtNmY3NWU3YzNkMjIyXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX182_CR0,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Sabrina",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BYjQ5ZjQ0YzQtOGY3My00MWVhLTgzNWItOTYwMTE5N2ZiMDUyXkEyXkFqcGdeQXVyNjUwMzI2NzU@._V1_UY268_CR1,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Tom and Huck",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BN2ZkZTMxOTAtMzg1Mi00M2U0LWE2NWItZDg4YmQyZjVkMDdhXkEyXkFqcGdeQXVyNTM5NzI0NDY@._V1_UX182_CR0,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Sudden Death",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BN2NjYWE5NjMtODlmZC00MjJhLWFkZTktYTJlZTI4YjVkMGNmXkEyXkFqcGdeQXVyNDc2NjEyMw@@._V1_UY268_CR0,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "GoldenEye",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BMzk2OTg4MTk1NF5BMl5BanBnXkFtZTcwNjExNTgzNA@@._V1_UX182_CR0,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "American President, The",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BMTI5NDU2NDYzOF5BMl5BanBnXkFtZTYwNDk5MDI5._V1_UY268_CR4,0,182,268_AL_.jpg"
-                },
-                {
-                    "name": "Dracula: Dead and Loving It",
-                    "cover": "https://m.media-amazon.com/images/M/MV5BZWQ0ZDFmYzMtZGMyMi00NmYxLWE0MGYtYzM2ZGNhMTE1NTczL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMjM5ODMxODc@._V1_UX182_CR0,0,182,268_AL_.jpg"
-                }
-            ];
-            $(data).each(function(i, n) {
-                var outDiv = $('<div class="col-sm-2"></div>');
-                var cardDiv = $('<div class="card h-movie-card"></div>');
-                var coverImg = $('<img src="' + n['cover'] + '" alt="' + n['name'] + '" class="card-img-top"/>');
-                var cardBodyDiv = $('<div class="card-body h-card-body"></div>')
-                var nameP = $('<p class="card-text"></p>').text(n['name']);
+            let yearType = '';
+            let genresType = '';
+            function createTypePanel(){
+                $.ajax({
+                    type: "GET",
+                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.allType,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    success: function(data) {
+                        if (data['status'] == 0) {
+                            let years = data['obj']['years'];
+                            let yearA = $('<a class="nav-link active h-type-item"></a>').text('All');
+                            let yearLi = $('<li class="nav-item"></li>');
+                            yearLi.append(yearA);
+                            yearLi.on('click', function(){
+                                yearType = '';
+                                $('#year').find('a').removeClass('active');
+                                $('#year').find('a').eq(0).addClass('active');
+                                updatePage(0, yearType, genresType);
+                            });
+                            $('#year').append(yearLi);
+                            $(years).each(function(i, n) {
+                                let yearA = $('<a class="nav-link h-type-item"></a>').text(n);
+                                let yearLi = $('<li class="nav-item"></li>');
+                                yearLi.append(yearA);
+                                yearLi.on('click', function(){
+                                    yearType = n;
+                                    $('#year').find('a').removeClass('active');
+                                    $('#year').find('a').eq(i + 1).addClass('active');
+                                    updatePage(0, yearType, genresType);
+                                });
+                                $('#year').append(yearLi);
+                            });
 
-                cardDiv.append(coverImg);
-                cardBodyDiv.append(nameP);
-                cardDiv.append(cardBodyDiv);
-                outDiv.append(cardDiv);
-                $('#movieList').append(outDiv);
-            });
+                            let genres = data['obj']['genres'];
+                            let genresA = $('<a class="nav-link active h-type-item"></a>').text('All');
+                            let genresLi = $('<li class="nav-item"></li>');
+                            genresLi.append(genresA);
+                            genresLi.on('click', function(){
+                                genresType = '';
+                                $('#genres').find('a').removeClass('active');
+                                $('#genres').find('a').eq(0).addClass('active');
+                                updatePage(0, yearType, genresType);
+                            });
+                            $('#genres').append(genresLi);
+                            $(genres).each(function(i, n) {
+                                let genresA = $('<a class="nav-link h-type-item"></a>').text(n);
+                                let genresLi = $('<li class="nav-item"></li>');
+                                genresLi.append(genresA);
+                                genresLi.on('click', function(){
+                                    genresType = n;
+                                    $('#genres').find('a').removeClass('active');
+                                    $('#genres').find('a').eq(i + 1).addClass('active');
+                                    updatePage(0, yearType, genresType);
+                                });
+                                $('#genres').append(genresLi);
+                            });
+                        }
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+                        $('#year').empty();
+                        $('#year').append($('<div class="empty"></div>').text('empty'));
+                        $('#genres').empty();
+                        $('#genres').append($('<div class="empty"></div>').text('empty'));
+                    }
+                })
+            }
+            createTypePanel();
+
+            function createMovieCard(data) {
+                $('#movieList').empty();
+                $(data).each(function(i, n) {
+                    let outDiv = $('<div class="col-sm-2"></div>');
+                    let cardDiv = $('<div class="card h-movie-card"></div>');
+                    let coverImg = $('<img src="' + n['cover'] + '" alt="' + n['movieName'] + '" class="card-img-top"/>');
+                    let cardBodyDiv = $('<div class="card-body h-card-body"></div>');
+                    let nameP = $('<p class="card-text"></p>').text(n['movieName']);
+
+                    cardDiv.append(coverImg);
+                    cardBodyDiv.append(nameP);
+                    cardDiv.append(cardBodyDiv);
+                    outDiv.append(cardDiv);
+                    $('#movieList').append(outDiv);
+                });
+            }
+
+            function createNextLi(len, curIndex) {
+                $('#nextList').empty();
+                for(let i = 0; i < len; i++) {
+                    if (Math.abs(i - curIndex) > 6) {
+                        continue;
+                    }
+
+                    let pageA = $('<a class="page-link h-page-item"></a>').text(i + 1);
+                    if (Math.abs(i - curIndex) == 6) {
+                        pageA.text('...');
+                    }
+                    let pageLi = $('<li class="page-item" ></li>');
+                    pageLi.append(pageA);
+                    if (i == curIndex) {
+                        pageLi.addClass('disabled');
+                    }
+                    pageLi.on('click', function(){
+                        updatePage(i, yearType, genresType);
+                    });
+
+                    $('#nextList').append(pageLi);
+                }
+            }
+
+            function updatePage(curIndex, yearType, genresType) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.allMovies + "?pageSize=" + pageConfig.pageSize + "&page=" + curIndex + "&year=" + yearType + "&genres=" + genresType,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    success: function(data) {
+                        if (data['status'] == 0) {
+                            let movieList = data['obj']['movies']['content'];
+                            createMovieCard(movieList);
+
+                            let nextTotal = data['obj']['movies']['totalPages'];
+                            createNextLi(nextTotal, curIndex);
+                        }
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+                        $('#movieList').empty();
+                        $('#movieList').append($('<h3 class="mx-auto"></h3>').text('No movies'));
+                    }
+                });
+            }
+
+            updatePage(0, yearType, genresType);
         });
     </script>
 </head>
@@ -169,20 +224,53 @@
         </div>
     </div>
     <div class="container">
+        <div class="type">
+            <hr>
+            <div class="row">
+                <div class="col-sm-1">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link disabled">Year:</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-11">
+                    <ul id="year" class="nav nav-pills">
+
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-1">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link disabled">Genres:</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-11">
+                    <ul id="genres" class="nav nav-pills">
+
+                    </ul>
+                </div>
+            </div>
+            <hr>
+        </div>
         <div class="row" id="movieList">
 
         </div>
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
+            <ul class="pagination justify-content-center" id="nextList">
+                <!--<li class="page-item disabled">-->
+                    <!--<a class="page-link" href="#" tabindex="-1">Previous</a>-->
+                <!--</li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                <!--<li class="page-item">-->
+                    <!--<a class="page-link" href="#">Next</a>-->
+                <!--</li>-->
             </ul>
         </nav>
     </div>

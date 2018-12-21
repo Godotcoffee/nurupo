@@ -4,5 +4,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MovieConfig {
-    public static final int MAX_PAGE_SIZE = 100;
+    public static final int MAX_PAGE_SIZE = 48;
 }

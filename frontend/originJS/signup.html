@@ -24,13 +24,13 @@
             display: none !important
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
         $(document).ready(function() {
             $("#signup-button").click(function() {
                 $.ajax({
                     type: "POST",
-                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + "/v1/user/register",
+                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.register,
                     headers: {
                         "Content-Type": "application/json;charset=utf-8"
                     },
@@ -40,10 +40,40 @@
                         "email": $("#email").val()
                     }),
                     success: function(data) {
-                        console.log(data);
+                        let outDiv = $('<div class="alert" role="alert"></div>');
+                        let strong = $('<strong></strong>').text('success!');
+                        let span = $('<p></p>').text('You have been signed up successfully!');
+                        if(data['status'] == 0) {
+                            outDiv.addClass('alert-success');
+                            window.setTimeout(function() {
+                                $(location).attr('href', '/index.html');
+                            }, 4000);
+                        } else {
+                            strong.text('error!');
+                            span.text(data['msg']);
+                            outDiv.addClass('alert-secondary');
+                        }
+                        outDiv.append(strong);
+                        outDiv.append(span);
+                        $('.h-alert').append(outDiv);
+                        window.setTimeout(function() {
+                            $('.alert').fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove();
+                            });
+                        }, 2000);
                     },
                     error: function(xmlHttpRequest, textStatus) {
-                        console.log(textStatus);
+                        let outDiv = $('<div class="alert alert-secondary" role="alert"></div>');
+                        let strong = $('<strong></strong>').text('error!');
+                        let span = $('<p></p>').text("Can't connect to server");
+                        outDiv.append(strong);
+                        outDiv.append(span);
+                        $('.h-alert').append(outDiv);
+                        window.setTimeout(function() {
+                            $('.alert').fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove();
+                            });
+                        }, 2000);
                     }
                 });
             });
@@ -357,6 +387,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="h-alert">
+
     </div>
 </body>
 

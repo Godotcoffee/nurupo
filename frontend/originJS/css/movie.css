@@ -20,4 +20,25 @@
 
 .h-card-body p {
     text-align: center;
+    font-size: 14px;
+}
+
+.h-page-item {
+    color: #007bff!important;
+}
+
+.disabled .h-page-item {
+    color: grey!important;
+}
+
+.h-type-item {
+    cursor: pointer;
+}
+
+.type hr {
+    border-top: 1px dashed #8c8b8b;
+}
+
+.empty {
+    padding: .5rem 1rem;
 }
