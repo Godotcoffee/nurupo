@@ -18,9 +18,9 @@ import javax.validation.Validator
 import kotlin.math.max
 import kotlin.math.min
 
-
+@CrossOrigin
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v1/user", produces = ["application/json;charset=utf-8;"])
 class UserControllerV1 {
     @Autowired
     lateinit var userConfig: UserConfig
@@ -34,7 +34,7 @@ class UserControllerV1 {
     @Autowired
     lateinit var userPasswordHash: IPasswordHash<User>
 
-    @PostMapping("/register", produces = ["application/json;charset=utf-8;"])
+    @PostMapping("/register")
     fun register(@Valid @RequestBody user: User, bindingResult: BindingResult): ResponseJSON {
         try {
             if (bindingResult.hasErrors()) {
@@ -55,7 +55,7 @@ class UserControllerV1 {
         }
     }
 
-    @PostMapping("/login", produces = ["application/json;charset=utf-8;"])
+    @PostMapping("/login")
     fun login(@Valid @RequestBody login: Login, bindingResult: BindingResult): ResponseJSON {
         try {
             if (bindingResult.hasErrors()) {

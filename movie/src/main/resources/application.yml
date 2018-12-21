@@ -6,7 +6,7 @@ spring:
     name: nurupo-movie-movie
   #Database
   datasource:
-    url: jdbc:mysql://localhost:3306/cloud_computer
+    url: jdbc:mysql://localhost:3306/nurupo_movie?serverTimezone=GMT%2b8
     username: nurupo
     password: nurupo
   #JPA
