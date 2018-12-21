@@ -17,12 +17,12 @@ import java.util.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1/movie")
+@RequestMapping(value = "/v1/movie", produces = {"application/json;charset=utf-8;"})
 public class MovieListController {
     @Autowired
     private IMovieDao movieDao;
 
-    @PostMapping(value = "/add-item", produces = {"application/json;charset=utf-8;"})
+    @PostMapping(value = "/add-item")
     public ResponseJSON addMovieItem(@RequestBody Movie movieItem) {
         if (movieDao.findById(movieItem.getId()).isPresent()) {
             return new ResponseJSON(1, null, "The movie already exists");
@@ -32,7 +32,7 @@ public class MovieListController {
         return new ResponseJSON(0, movieItem);
     }
 
-    @PostMapping(value = "/add-list", produces = {"application/json;charset=utf-8;"})
+    @PostMapping(value = "/add-list")
     public ResponseJSON addMovieList(@RequestBody Movie[] movies) {
         List<Movie> newMovieList = new ArrayList<>();
         for (Movie movieItem : movies) {
@@ -51,7 +51,7 @@ public class MovieListController {
         return new ResponseJSON(0, result);
     }
 
-    @GetMapping(value = "/filter", produces = {"application/json;charset=utf-8;"})
+    @GetMapping(value = "/filter")
     public ResponseJSON filterMovie(@RequestParam("type") int type, @RequestParam("key") String key) {
         // type为1时是genres，为2时是year
         Map<String, Object> result = new LinkedHashMap<>();
@@ -82,7 +82,7 @@ public class MovieListController {
         return new ResponseJSON(1, null, msg);
     }
 
-    @GetMapping(value = "/all", produces = {"application/json;charset=utf-8;"})
+    @GetMapping(value = "/all")
     public ResponseJSON getAllMovie(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "pageSize", defaultValue = "0") int pageSize,
@@ -100,7 +100,7 @@ public class MovieListController {
         return new ResponseJSON(0, result);
     }
 
-    @GetMapping(value = "/type", produces = {"application/json;charset=utf-8;"})
+    @GetMapping(value = "/type")
     public ResponseJSON getAllType(){
         Map<String, Object> result = new LinkedHashMap<>();
         List<Integer> allYear = movieDao.findDistinctYearType();

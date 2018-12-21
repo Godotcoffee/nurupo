@@ -26,6 +26,49 @@
     </style>
     <script>
         $(document).ready(function(){
+            localStorage.removeItem('userId');
+            localStorage.removeItem('username');
+            function errorHint(flag, msg) {
+                let outDiv = $('<div class="alert alert-secondary" role="alert"></div>');
+                let strong = $('<strong></strong>').text('error!');
+                if(flag) {
+                    outDiv.removeClass('alert-secondary');
+                    outDiv.addClass('alert-success');
+                    strong.text('success!');
+                }
+                let span = $('<p></p>').text(msg);
+                outDiv.append(strong);
+                outDiv.append(span);
+                $('.h-alert').append(outDiv);
+                window.setTimeout(function() {
+                    $('.alert').fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove();
+                    });
+                }, 2000);
+            }
+
+            function getUserInfo(userId) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.userInfo + "/" + userId,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    success: function(data) {
+                        if(data['status'] == 0) {
+                            errorHint(true, "You have been signed up successfully!");
+                            localStorage.setItem('username', JSON.stringify({data: data['obj']['username'], time: new Date().getTime()}));
+                            $(location).attr('href', '/index.html');
+                        } else {
+                            errorHint(false, "Failed to get information. Please login again");
+                        }
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+                        errorHint(false, "Can't connect to server");
+                    }
+                })
+            }
+
             $('#signin-button').on('click', function(){
                 $.ajax({
                     type: "POST",
@@ -38,40 +81,15 @@
                         "password": $("#password").val()
                     }),
                     success: function(data) {
-                        let outDiv = $('<div class="alert" role="alert"></div>');
-                        let strong = $('<strong></strong>').text('success!');
-                        let span = $('<p></p>').text('You have been signed in successfully!');
                         if(data['status'] == 0) {
-                            outDiv.addClass('alert-success');
-                            window.setTimeout(function() {
-                                $(location).attr('href', '/index.html');
-                            }, 4000);
+                            localStorage.setItem('userId', JSON.stringify({data: data['obj']['userId'], time: new Date().getTime()}));
+                            getUserInfo(data['obj']['userId']);
                         } else {
-                            strong.text('error!');
-                            span.text(data['msg']);
-                            outDiv.addClass('alert-secondary');
+                            errorHint(false, data['msg']);
                         }
-                        outDiv.append(strong);
-                        outDiv.append(span);
-                        $('.h-alert').append(outDiv);
-                        window.setTimeout(function() {
-                            $('.alert').fadeTo(500, 0).slideUp(500, function(){
-                                $(this).remove();
-                            });
-                        }, 2000);
                     },
                     error: function(xmlHttpRequest, textStatus) {
-                        let outDiv = $('<div class="alert alert-secondary" role="alert"></div>');
-                        let strong = $('<strong></strong>').text('error!');
-                        let span = $('<p></p>').text("Can't connect to server");
-                        outDiv.append(strong);
-                        outDiv.append(span);
-                        $('.h-alert').append(outDiv);
-                        window.setTimeout(function() {
-                            $('.alert').fadeTo(500, 0).slideUp(500, function(){
-                                $(this).remove();
-                            });
-                        }, 2000);
+                        errorHint(false, "Can't connect to server");
                     }
                 });
             });

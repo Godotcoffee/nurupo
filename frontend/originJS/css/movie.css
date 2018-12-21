@@ -4,6 +4,15 @@
     cursor: pointer;
 }
 
+#show-username, #header-log-out {
+    color: white;
+    font-weight: 700;
+    text-align: center;
+}
+#header-log-out:hover {
+    color: black;
+}
+
 #movieList {
     margin-top: 20px;
 }
@@ -41,4 +50,8 @@
 
 .empty {
     padding: .5rem 1rem;
+}
+
+.no-show {
+    display: none;
 }

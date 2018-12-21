@@ -27,6 +27,27 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
         $(document).ready(function() {
+            localStorage.removeItem('userId');
+            localStorage.removeItem('username');
+            function errorHint(flag, msg) {
+                let outDiv = $('<div class="alert alert-secondary" role="alert"></div>');
+                let strong = $('<strong></strong>').text('error!');
+                if(flag) {
+                    outDiv.removeClass('alert-secondary');
+                    outDiv.addClass('alert-success');
+                    strong.text('success!');
+                }
+                let span = $('<p></p>').text(msg);
+                outDiv.append(strong);
+                outDiv.append(span);
+                $('.h-alert').append(outDiv);
+                window.setTimeout(function() {
+                    $('.alert').fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove();
+                    });
+                }, 2000);
+            }
+
             $("#signup-button").click(function() {
                 $.ajax({
                     type: "POST",
@@ -40,40 +61,20 @@
                         "email": $("#email").val()
                     }),
                     success: function(data) {
-                        let outDiv = $('<div class="alert" role="alert"></div>');
-                        let strong = $('<strong></strong>').text('success!');
-                        let span = $('<p></p>').text('You have been signed up successfully!');
                         if(data['status'] == 0) {
-                            outDiv.addClass('alert-success');
+                            errorHint(true, 'You have been signed up successfully!');
                             window.setTimeout(function() {
-                                $(location).attr('href', '/index.html');
-                            }, 4000);
+                                $(location).attr('href', '/login.html');
+                            }, 3000);
                         } else {
-                            strong.text('error!');
-                            span.text(data['msg']);
-                            outDiv.addClass('alert-secondary');
+                            $("#username").val('');
+                            $("#password").val('');
+                            $("#email").val('');
+                            errorHint(false, data['msg']);
                         }
-                        outDiv.append(strong);
-                        outDiv.append(span);
-                        $('.h-alert').append(outDiv);
-                        window.setTimeout(function() {
-                            $('.alert').fadeTo(500, 0).slideUp(500, function(){
-                                $(this).remove();
-                            });
-                        }, 2000);
                     },
                     error: function(xmlHttpRequest, textStatus) {
-                        let outDiv = $('<div class="alert alert-secondary" role="alert"></div>');
-                        let strong = $('<strong></strong>').text('error!');
-                        let span = $('<p></p>').text("Can't connect to server");
-                        outDiv.append(strong);
-                        outDiv.append(span);
-                        $('.h-alert').append(outDiv);
-                        window.setTimeout(function() {
-                            $('.alert').fadeTo(500, 0).slideUp(500, function(){
-                                $(this).remove();
-                            });
-                        }, 2000);
+                        errorHint(true, "Can't connect to server");
                     }
                 });
             });

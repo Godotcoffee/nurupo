@@ -10,6 +10,43 @@
     <title>Restaurants, Dentists, Bars, Beauty Salons, Doctors - Yelp</title>
     <script>
         $(document).ready(function() {
+            function isLogin() {
+                let userId = localStorage.getItem('userId');
+                let userIdObj = JSON.parse(userId);
+                let username = localStorage.getItem('username');
+                let usernameObj = JSON.parse(username);
+
+                if ((userIdObj == null ) || (usernameObj == null) || (new Date().getTime() - userIdObj.time > exp_time) || (new Date().getTime() - usernameObj.time > exp_time)) {
+                    localStorage.removeItem('userId');
+                    localStorage.removeItem('username');
+                    $('#noLogin').removeClass('no-show');
+                    $('#isLogin').addClass('no-show');
+                } else {
+                    $('#noLogin').addClass('no-show');
+                    $('#isLogin').removeClass('no-show');
+                    $('#show-username').text(usernameObj.data);
+                    $('#header-log-out').on('click', function(){
+                        $.ajax({
+                            type: "GET",
+                            url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.logout + "/" + userIdObj.data,
+                            headers: {
+                                "Content-Type": "application/json;charset=utf-8"
+                            },
+                            success: function(data) {
+                                localStorage.removeItem('userId');
+                                localStorage.removeItem('username');
+                                $(location).attr('href', '/login.html');
+                            },
+                            error: function(xmlHttpRequest, textStatus) {
+                                localStorage.removeItem('userId');
+                                localStorage.removeItem('username');
+                                $(location).attr('href', '/login.html');
+                            }
+                        });
+                    });
+                }
+            }
+
             let yearType = '';
             let genresType = '';
             function createTypePanel(){
@@ -144,6 +181,7 @@
                 });
             }
 
+            isLogin();
             updatePage(0, yearType, genresType);
         });
     </script>
@@ -176,7 +214,7 @@
                         </div>
                     </div>
                     <div class="arrange_unit nowrap">
-                        <ul class="header-nav hero-header_nav main-header_account">
+                        <ul class="header-nav hero-header_nav main-header_account" id="noLogin">
                             <li class="header-nav_item u-space-r2" id="header-log-in">
                                 <a class="header-nav_link header-nav_link--log-in js-analytics-click" href="/login.html"
                                     data-analytics-label="login">
@@ -186,6 +224,14 @@
                             <li class="header-nav_item u-space-r0 js-analytics-click" id="header-sign-up"
                                 data-analytics-label="signup">
                                 <a href="/signup.html" class="ybtn ybtn--primary header-nav_button nowrap">Sign Up</a>
+                            </li>
+                        </ul>
+                        <ul class="header-nav hero-header_nav main-header_account" id="isLogin">
+                            <li class="header-nav_item u-space-r2" id="show-username">
+
+                            </li>
+                            <li class="header-nav_item u-space-r0 js-analytics-click" id="header-log-out">
+                                <a class="ybtn ybtn--primary header-nav_button nowrap">Log out</a>
                             </li>
                         </ul>
                     </div>
