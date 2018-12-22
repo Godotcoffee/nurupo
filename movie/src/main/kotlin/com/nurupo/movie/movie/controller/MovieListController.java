@@ -12,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.time.LocalTime;
 import java.util.*;
 
 @CrossOrigin(origins = "*")
@@ -82,6 +81,19 @@ public class MovieListController {
         return new ResponseJSON(1, null, msg);
     }
 
+    @GetMapping(value = "/id/{movieId}")
+    public ResponseJSON getMovieItem(@PathVariable("movieId") String movieId) {
+        Map<String, Object> result = new LinkedHashMap<>();
+
+        if (movieDao.findById(movieId).isPresent()) {
+            Movie movieItem = movieDao.findById(movieId).get();
+            result.put("movie", movieItem);
+            return new ResponseJSON(0, result);
+        }
+
+        return new ResponseJSON(1, null, "Movie not existed");
+    }
+
     @GetMapping(value = "/all")
     public ResponseJSON getAllMovie(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -92,8 +104,6 @@ public class MovieListController {
         pageSize = Math.min(Math.max(pageSize, 12), MovieConfig.MAX_PAGE_SIZE);
         Map<String, Object> result = new LinkedHashMap<>();
 
-//        Page<Movie> moviePage = movieDao.findAll(PageRequest.of(page, pageSize));
-//        List<Movie> moviePage = movieDao.findAllByYearContainingAndGenresContaining(year, genres);
         Page<Movie> moviePage = movieDao.findAllMovieByType(year, genres, PageRequest.of(page, pageSize));
         result.put("movies", moviePage);
 
