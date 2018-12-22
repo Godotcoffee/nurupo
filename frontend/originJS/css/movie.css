@@ -4,6 +4,10 @@
     cursor: pointer;
 }
 
+#show-username {
+    cursor: pointer;
+}
+
 #show-username, #header-log-out {
     color: white;
     font-weight: 700;
@@ -20,6 +24,8 @@
 .h-movie-card {
     width: 150px;
     margin-bottom: 20px;
+    cursor: pointer;
+    text-decoration: none!important;
 }
 
 .h-card-body {
@@ -30,6 +36,7 @@
 .h-card-body p {
     text-align: center;
     font-size: 14px;
+    color: black;
 }
 
 .h-page-item {

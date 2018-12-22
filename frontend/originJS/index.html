@@ -7,7 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <title>Restaurants, Dentists, Bars, Beauty Salons, Doctors - Yelp</title>
+    <title>Nurupo</title>
     <script>
         $(document).ready(function() {
             function isLogin() {
@@ -121,7 +121,7 @@
                 $('#movieList').empty();
                 $(data).each(function(i, n) {
                     let outDiv = $('<div class="col-sm-2"></div>');
-                    let cardDiv = $('<div class="card h-movie-card"></div>');
+                    let cardDiv = $('<a class="card h-movie-card" href="movie.html?id=' + n['id'] + '"></a>');
                     let coverImg = $('<img src="' + n['cover'] + '" alt="' + n['movieName'] + '" class="card-img-top"/>');
                     let cardBodyDiv = $('<div class="card-body h-card-body"></div>');
                     let nameP = $('<p class="card-text"></p>').text(n['movieName']);
@@ -227,9 +227,12 @@
                             </li>
                         </ul>
                         <ul class="header-nav hero-header_nav main-header_account" id="isLogin">
-                            <li class="header-nav_item u-space-r2" id="show-username">
-
-                            </li>
+                            <li class="nav-link header-nav_item u-space-r2" id="show-username" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"></li>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Info</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/history">History</a>
+                            </div>
                             <li class="header-nav_item u-space-r0 js-analytics-click" id="header-log-out">
                                 <a class="ybtn ybtn--primary header-nav_button nowrap">Log out</a>
                             </li>

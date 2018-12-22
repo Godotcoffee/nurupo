@@ -1,0 +1,120 @@
+<!doctype html>
+<head>
+    <link rel="stylesheet" href="css/homepage-main-pkg.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="js/config.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <title>movie</title>
+    <script>
+        $(document).ready(function() {
+            function isLogin() {
+                let userId = localStorage.getItem('userId');
+                let userIdObj = JSON.parse(userId);
+                let username = localStorage.getItem('username');
+                let usernameObj = JSON.parse(username);
+
+                if ((userIdObj == null ) || (usernameObj == null) || (new Date().getTime() - userIdObj.time > exp_time) || (new Date().getTime() - usernameObj.time > exp_time)) {
+                    localStorage.removeItem('userId');
+                    localStorage.removeItem('username');
+                    $(location).attr('href', '/index.html');
+                } else {
+                    $('#noLogin').addClass('no-show');
+                    $('#isLogin').removeClass('no-show');
+                    $('#show-username').text(usernameObj.data);
+                    $('#header-log-out').on('click', function(){
+                        $.ajax({
+                            type: "GET",
+                            url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.logout + "/" + userIdObj.data,
+                            headers: {
+                                "Content-Type": "application/json;charset=utf-8"
+                            },
+                            success: function(data) {
+                                localStorage.removeItem('userId');
+                                localStorage.removeItem('username');
+                                $(location).attr('href', '/login.html');
+                            },
+                            error: function(xmlHttpRequest, textStatus) {
+                                localStorage.removeItem('userId');
+                                localStorage.removeItem('username');
+                                $(location).attr('href', '/login.html');
+                            }
+                        });
+                    });
+                    loadHistory(userIdObj.data);
+                }
+            }
+
+            function loadHistory(id) {
+
+            }
+
+            isLogin();
+        });
+    </script>
+</head>
+<body>
+    <div class="page-header">
+        <div class="main-header main-content-wrap js-main-header webview-hidden main-header--simple main-header--lsat">
+            <div class="main-header_wrapper">
+                <div class="content-container">
+                    <div class="arrange arrange--18 arrange--middle main-header_arrange">
+                        <div class="arrange_unit arrange_unit--fill align-middle main-header--full_arrange_unit main-header_search-container">
+                            <a class="h-logo" href="/index.html">
+                                Nurupo
+                            </a>
+                            <ul class="header-nav hero-header_nav main-header_account" id="noLogin">
+                                <li class="header-nav_item u-space-r2" id="header-log-in">
+                                    <a class="header-nav_link header-nav_link--log-in js-analytics-click" href="/login.html"
+                                       data-analytics-label="login">
+                                        Log In
+                                    </a>
+                                </li>
+                                <li class="header-nav_item u-space-r0 js-analytics-click" id="header-sign-up"
+                                    data-analytics-label="signup">
+                                    <a href="/signup.html" class="ybtn ybtn--primary header-nav_button nowrap">Sign Up</a>
+                                </li>
+                            </ul>
+                            <ul class="header-nav hero-header_nav main-header_account" id="isLogin">
+                                <li class="nav-link header-nav_item u-space-r2" id="show-username" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Weihui</li>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Info</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/history">History</a>
+                                </div>
+                                <li class="header-nav_item u-space-r0 js-analytics-click" id="header-log-out">
+                                    <a class="ybtn ybtn--primary header-nav_button nowrap">Log out</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <ul class="list-group list-group-flush" id="h-history">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Morbi leo risus</li>
+            <li class="list-group-item">Porta ac consectetur ac</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+        </ul>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center" id="nextList">
+                <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
+</html>

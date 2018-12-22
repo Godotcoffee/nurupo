@@ -1,0 +1,96 @@
+a.h-logo {
+    color: white;
+    display: inline;
+    font-size: 1.75rem;
+    margin-bottom: .5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+}
+
+a.h-logo:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.main-header_wrapper {
+    background: rgb(110, 90, 60)!important;
+}
+
+ul.header-nav.hero-header_nav {
+    margin-bottom: 0px;
+}
+
+#header-log-in a {
+    border: none;
+    padding: 7px 24px 8px;
+}
+
+#header-log-in a:hover {
+    background: rgb(110, 90, 60)!important;
+    border-bottom: 2px solid #fff;
+}
+
+#show-username {
+    cursor: pointer;
+}
+
+#show-username, #header-log-out {
+    color: white;
+    font-weight: 700;
+    text-align: center;
+}
+#header-log-out:hover {
+    color: black;
+}
+
+.container {
+    margin-top: 20px!important;
+}
+
+.movie-info {
+    margin-bottom: 20px;
+}
+
+.h-movie-cover img {
+    width: 170px;
+}
+
+.h-movie-info span {
+    font: 15px Arial, Helvetica, sans-serif;
+    line-height: 150%;
+}
+
+.info-key {
+    color: #666666;
+}
+
+.info-value {
+    color: black;
+}
+
+.h-movie-rate {
+    border-left: 2px solid #eaeaea;
+}
+
+#ratingsSubmit {
+    float: right;
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+.no-show {
+    display: none;
+}
+
+#h-history {
+    margin-bottom: 20px;
+}

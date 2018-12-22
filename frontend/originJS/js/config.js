@@ -1,10 +1,12 @@
 const connectConfig = {
-    ip: "192.168.0.131",
-    port: "8999"
+    // ip: "192.168.0.131",
+    ip: "localhost",
+    port: "9002"
 };
 
 const urlConfig = {
     allMovies: "/v1/movie/all",
+    oneMovie: "/v1/movie/id",
     allType: "/v1/movie/type",
     register: "/v1/user/register",
     login: "/v1/user/login",
