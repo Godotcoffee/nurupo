@@ -33,7 +33,7 @@ public class History {
 
     @Column(name = "TIMESTAMP", nullable = false)
     @JsonProperty("timestamp")
-    private Long timestamp;
+    private long timestamp;
 
     public History(int userId, String movieId, float rating, Long timestamp) {
         this.historyId = userId + movieId;

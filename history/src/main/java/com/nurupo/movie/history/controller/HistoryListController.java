@@ -31,7 +31,7 @@ public class HistoryListController {
         if (historyDAO.findById(historyId).isPresent()) {
             return new ResponseJSON(1, null, "The history already exists");
         }
-        Long timestamp = System.currentTimeMillis() / 1000;
+        long timestamp = System.currentTimeMillis() / 1000;
         historyItem.setTimestamp(timestamp);
         historyItem.setHistoryId(historyId);
         historyDAO.save(historyItem);
@@ -41,7 +41,7 @@ public class HistoryListController {
     @PostMapping(value = "/add-list")
     public ResponseJSON addHistoryList(@RequestBody History[] historyList) {
         List<History> newHistoryList = new ArrayList<>();
-        Long timestamp = System.currentTimeMillis() / 1000;
+        long timestamp = System.currentTimeMillis() / 1000;
         String historyId;
         for (History historyItem: historyList) {
             historyId = historyItem.getUserId() + historyItem.getMovieId();
@@ -153,9 +153,7 @@ public class HistoryListController {
                 if (tempStr.length != 4) {
                     incorrectNum++;
                 } else {
-                    int userId = Integer.parseInt(tempStr[0]);
-                    float rating = Float.parseFloat(tempStr[2]);
-                    History historyItem = new History(userId, tempStr[1], rating, Long.parseLong(tempStr[3]));
+                    History historyItem = new History(Integer.parseInt(tempStr[0]), tempStr[1], Float.parseFloat(tempStr[2]), Long.parseLong(tempStr[3]));
                     historyList.add(historyItem);
                 }
             }
