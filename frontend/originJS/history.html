@@ -2,6 +2,7 @@
 <head>
     <link rel="stylesheet" href="css/homepage-main-pkg.css">
     <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/history.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="js/config.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -10,6 +11,23 @@
     <title>movie</title>
     <script>
         $(document).ready(function() {
+            let isSortTime = true;
+            $('#rating-time').change(function() {
+                isSortTime = true;
+                let userId = localStorage.getItem('userId');
+                let userIdObj = JSON.parse(userId);
+
+                // loadHistory(userIdObj.data);
+                loadHistory(1);
+            });
+            $('#rating-score').change(function() {
+                isSortTime = false;
+                let userId = localStorage.getItem('userId');
+                let userIdObj = JSON.parse(userId);
+
+                // loadHistory(userIdObj.data);
+                loadHistory(1);
+            });
             function isLogin() {
                 let userId = localStorage.getItem('userId');
                 let userIdObj = JSON.parse(userId);
@@ -19,10 +37,13 @@
                 if ((userIdObj == null ) || (usernameObj == null) || (new Date().getTime() - userIdObj.time > exp_time) || (new Date().getTime() - usernameObj.time > exp_time)) {
                     localStorage.removeItem('userId');
                     localStorage.removeItem('username');
-                    $(location).attr('href', '/index.html');
+                    $('#noLogin').removeClass('no-show');
+                    $('#isLogin').addClass('no-show');
+                    // $(location).attr('href', '/index.html');
                 } else {
                     $('#noLogin').addClass('no-show');
                     $('#isLogin').removeClass('no-show');
+                    $('.switch').removeClass('no-show');
                     $('#show-username').text(usernameObj.data);
                     $('#header-log-out').on('click', function(){
                         $.ajax({
@@ -45,10 +66,93 @@
                     });
                     loadHistory(userIdObj.data);
                 }
+                loadHistory(1);
+                $('.switch').removeClass('no-show');
+            }
+
+            function createHistoryList(movieIds) {
+                $('#h-history').empty();
+                $.ajax({
+                    type: "GET",
+                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.arrayMovie + "/" + movieIds,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    success: function(data) {
+                        let historyList = data['obj']['movies'];
+                        $(historyList).each(function(i, n) {
+                            let liHistory = $('<li class="list-group-item"></li>');
+                            let aHistory = $('<a href="movie.html?id=' + n['id'] + '"></a>').text(n['movieName']);
+                            liHistory.append(aHistory);
+                            $('#h-history').append(liHistory);
+                        });
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+                        $('#h-history').empty();
+                        $('#h-history').append($('<h3 class="mx-auto"></h3>').text('No movies'));
+                    }
+                });
+            }
+
+            function createNextLi(userId, len, curIndex) {
+                $('#nextList').empty();
+                for(let i = 0; i < len; i++) {
+                    if (Math.abs(i - curIndex) > 6) {
+                        continue;
+                    }
+
+                    let pageA = $('<a class="page-link h-page-item"></a>').text(i + 1);
+                    if (Math.abs(i - curIndex) == 6) {
+                        pageA.text('...');
+                    }
+                    let pageLi = $('<li class="page-item" ></li>');
+                    pageLi.append(pageA);
+                    if (i == curIndex) {
+                        pageLi.addClass('disabled');
+                    }
+                    pageLi.on('click', function(){
+                        updatePage(userId, i);
+                    });
+
+                    $('#nextList').append(pageLi);
+                }
+            }
+
+            function updatePage(userId, curIndex) {
+                let url = "http://" + historyConfig.ip + ":" + historyConfig.port + urlConfig.allHistoryRating + "?userId=" + userId + "&pageSize=" + pageConfig.historySize + "&page=" + curIndex;
+                if (isSortTime) {
+                    url = "http://" + historyConfig.ip + ":" + historyConfig.port + urlConfig.allHistoryTime + "?userId=" + userId + "&pageSize=" + pageConfig.historySize + "&page=" + curIndex;
+                }
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    success: function(data) {
+                        if (data['status'] == 0) {
+                            let nextTotal = data['obj']['historyPage']['totalPages'];
+                            let historyList = data['obj']['historyPage']['content'];
+                            let movieIds = '';
+                            historyList.forEach(function(o, i) {
+                                movieIds += o['movieId'];
+                                if (i != historyList.length - 1) {
+                                    movieIds += ',';
+                                }
+                            });
+                            createNextLi(userId, nextTotal, curIndex);
+                            createHistoryList(movieIds);
+                        }
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+                        $('#h-history').empty();
+                        $('#h-history').append($('<h3 class="mx-auto"></h3>').text('No movies'));
+                    }
+                });
             }
 
             function loadHistory(id) {
-
+                updatePage(id, 0);
             }
 
             isLogin();
@@ -95,24 +199,29 @@
         </div>
     </div>
     <div class="container">
+        <div class="clearfix">
+            <div class="switch no-show">
+                <input type="radio" class="switch-input" name="view2" value="time" id="rating-time" checked>
+                <label for="rating-time" class="switch-label switch-label-off">Time</label>
+                <input type="radio" class="switch-input" name="view2" value="score" id="rating-score">
+                <label for="rating-score" class="switch-label switch-label-on">Rating</label>
+                <span class="switch-selection"></span>
+            </div>
+        </div>
         <ul class="list-group list-group-flush" id="h-history">
-            <li class="list-group-item">Cras justo odio</li>
-            <li class="list-group-item">Dapibus ac facilisis in</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Porta ac consectetur ac</li>
-            <li class="list-group-item">Vestibulum at eros</li>
+
         </ul>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center" id="nextList">
-                <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-                </li>
+                <!--<li class="page-item disabled">-->
+                <!--<a class="page-link" href="#" tabindex="-1">Previous</a>-->
+                <!--</li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+                <!--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                <!--<li class="page-item">-->
+                <!--<a class="page-link" href="#">Next</a>-->
+                <!--</li>-->
             </ul>
         </nav>
     </div>

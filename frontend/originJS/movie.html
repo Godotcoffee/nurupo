@@ -10,6 +10,27 @@
     <title>movie</title>
     <script>
         $(document).ready(function() {
+            function errorHint(flag, msg) {
+                let outDiv = $('<div class="alert alert-secondary" role="alert"></div>');
+                let strong = $('<strong></strong>').text('error!');
+                if(flag) {
+                    outDiv.removeClass('alert-secondary');
+                    outDiv.addClass('alert-success');
+                    strong.text('success!');
+                }
+                let span = $('<p></p>').text(msg);
+                outDiv.append(strong);
+                outDiv.append(span);
+                $('.h-alert').append(outDiv);
+                window.setTimeout(function() {
+                    $('.alert').fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove();
+                    });
+                }, 2000);
+            }
+
+            $('#hadRatings').addClass('no-show');
+            $('#noRatings').addClass('no-show');
             function getQueryString(name) {
                 let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
                 let r = window.location.search.substr(1).match(reg);
@@ -52,9 +73,11 @@
                             }
                         });
                     });
+                    loadMovieRating(userIdObj.data);
                 }
                 // $('#noLogin').addClass('no-show');
                 // $('#isLogin').removeClass('no-show');
+                loadMovieRating(1);
             }
 
             function loadMovieInfo() {
@@ -77,6 +100,73 @@
                     error: function(xmlHttpRequest, textStatus) {
 
                     }
+                });
+
+            }
+
+            function loadMovieRating(userId) {
+                let movieId = getQueryString('id');
+                $.ajax({
+                    type: "GET",
+                    url: "http://" + historyConfig.ip + ":" + historyConfig.port + urlConfig.oneHistory + "?userId=" + userId + "&movieId=" + movieId,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    success: function(data) {
+                        if(data['status'] == 0) {
+                            let ratingTime = new Date(data['obj']['timestamp'] * 1000);
+                            let ratingScore = data['obj']['rating'];
+                            $('#info-rating').text(ratingScore);
+                            $('#info-time').text(ratingTime.toLocaleDateString());
+                            $('#hadRatings').removeClass('no-show');
+                            $('#noRatings').addClass('no-show');
+                        } else {
+                            $('#hadRatings').addClass('no-show');
+                            $('#noRatings').removeClass('no-show');
+                            ratingMovie(userId);
+                        }
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+                        $('#hadRatings').addClass('no-show');
+                        $('#noRatings').removeClass('no-show');
+                    }
+                });
+            }
+
+            function ratingMovie(userId) {
+                let movieId = getQueryString('id');
+                $('#ratingsSubmit').click(function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "http://" + historyConfig.ip + ":" + historyConfig.port + urlConfig.ratingMovie,
+                        headers: {
+                            "Content-Type": "application/json;charset=utf-8"
+                        },
+                        data: JSON.stringify({
+                            "userId": userId,
+                            "movieId": movieId,
+                            "rating": $("#toRatings").val()
+                        }),
+                        success: function(data) {
+                            if(data['status'] == 0) {
+                                let ratingTime = new Date(data['obj']['timestamp'] * 1000);
+                                let ratingScore = data['obj']['rating'];
+                                $('#info-rating').text(ratingScore);
+                                $('#info-time').text(ratingTime.toLocaleDateString());
+                                $('#hadRatings').removeClass('no-show');
+                                $('#noRatings').addClass('no-show');
+                            } else {
+                                $('#hadRatings').addClass('no-show');
+                                $('#noRatings').removeClass('no-show');
+                                errorHint(false, data['msg']);
+                            }
+                        },
+                        error: function(xmlHttpRequest, textStatus) {
+                            $('#hadRatings').addClass('no-show');
+                            $('#noRatings').removeClass('no-show');
+                            errorHint(false, "Can't connect to server");
+                        }
+                    });
                 });
             }
 
@@ -131,50 +221,77 @@
                 <img src="" alt=""/>
             </div>
             <div class="col-sm-5 h-movie-info">
-                    <span>
-                        <span class="info-key">
-                            Year
-                        </span>
-                        :
-                        <span class="info-value" id="info-year">
-
-                        </span>
+                <span>
+                    <span class="info-key">
+                        Year
                     </span>
+                    :
+                    <span class="info-value" id="info-year">
+
+                    </span>
+                </span>
                 <br>
                 <span>
-                        <span class="info-key">
-                            Genres
-                        </span>
-                        :
-                        <span class="info-value" id="info-genres">
-
-                        </span>
+                    <span class="info-key">
+                        Genres
                     </span>
+                    :
+                    <span class="info-value" id="info-genres">
+
+                    </span>
+                </span>
                 <br>
             </div>
             <div class="col-sm-4 h-movie-rate clearfix">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="toRatings">Ratings</label>
-                    </div>
-                    <select class="custom-select" id="toRatings">
-                        <option selected>Choose...</option>
-                        <option value="0.0">0.0</option>
-                        <option value="0.5">0.5</option>
-                        <option value="1.0">1.0</option>
-                        <option value="1.5">1.5</option>
-                        <option value="2.0">2.0</option>
-                        <option value="2.5">2.5</option>
-                        <option value="3.0">3.0</option>
-                        <option value="3.5">3.5</option>
-                        <option value="4.0">4.0</option>
-                        <option value="4.5">4.5</option>
-                        <option value="5.0">5.0</option>
-                    </select>
+                <div id="hadRatings">
+                    <span>
+                        <span class="info-key">
+                            Rating
+                        </span>
+                        :
+                        <span class="info-value" id="info-rating">
+
+                        </span>
+                    </span>
+                    <br>
+                    <span>
+                        <span class="info-key">
+                            Rating Time
+                        </span>
+                        :
+                        <span class="info-value" id="info-time">
+
+                        </span>
+                    </span>
+                    <br>
                 </div>
-                <button type="button" class="btn btn-secondary" id="ratingsSubmit">Submit</button>
+                <div id="noRatings">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="toRatings">Ratings</label>
+                        </div>
+                        <select class="custom-select" id="toRatings">
+                            <option selected value="0.0">Choose...</option>
+                            <option value="0.0">0.0</option>
+                            <option value="0.5">0.5</option>
+                            <option value="1.0">1.0</option>
+                            <option value="1.5">1.5</option>
+                            <option value="2.0">2.0</option>
+                            <option value="2.5">2.5</option>
+                            <option value="3.0">3.0</option>
+                            <option value="3.5">3.5</option>
+                            <option value="4.0">4.0</option>
+                            <option value="4.5">4.5</option>
+                            <option value="5.0">5.0</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="ratingsSubmit">Submit</button>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="h-alert">
+
     </div>
 </body>
 </html>

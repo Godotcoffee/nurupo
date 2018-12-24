@@ -94,6 +94,22 @@ public class MovieListController {
         return new ResponseJSON(1, null, "Movie not existed");
     }
 
+    @GetMapping(value = "/ids/{movies}")
+    public ResponseJSON getMovieArray(@PathVariable("movies") String movies) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        List<Movie> movieList = new ArrayList<>();
+        String[] idArr = movies.split(",");
+        for (String movieId : idArr) {
+            if (movieDao.findById(movieId).isPresent()) {
+                Movie movieItem = movieDao.findById(movieId).get();
+                movieList.add(movieItem);
+            }
+        }
+        result.put("movies", movieList);
+
+        return new ResponseJSON(0, result);
+    }
+
     @GetMapping(value = "/all")
     public ResponseJSON getAllMovie(
             @RequestParam(value = "page", defaultValue = "0") int page,
