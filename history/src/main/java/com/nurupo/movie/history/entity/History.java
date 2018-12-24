@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Data
@@ -16,8 +17,9 @@ import javax.persistence.Id;
 public class History {
     @Id
     @Column(name = "HID")
+    @GeneratedValue
     @JsonProperty("historyId")
-    private String historyId;
+    private int historyId;
 
     @Column(name = "UID", nullable = false)
     @JsonProperty("userId")
@@ -36,7 +38,6 @@ public class History {
     private long timestamp;
 
     public History(int userId, String movieId, float rating, Long timestamp) {
-        this.historyId = userId + movieId;
         this.userId = userId;
         this.movieId = movieId;
         this.rating = rating;

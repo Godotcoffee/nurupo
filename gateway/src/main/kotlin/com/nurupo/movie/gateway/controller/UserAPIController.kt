@@ -4,6 +4,7 @@ import com.nurupo.movie.gateway.config.ServiceName
 import com.nurupo.movie.gateway.config.UserAPIConfig
 import com.nurupo.movie.gateway.entity.ResponseJSON
 import com.nurupo.movie.gateway.tools.RestJSONHelper
+import com.nurupo.movie.gateway.tools.UserHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.client.RestTemplate
@@ -20,7 +21,7 @@ class UserAPIController {
 
     @PostMapping("/register")
     fun userRegister(@RequestBody request: String, @PathVariable("v") v: String): ResponseJSON {
-        return RestJSONHelper.restPostHelper(
+        return RestJSONHelper.restPost(
                 restTemplate,
                 "http://${ServiceName.nurupoMovieUsers}/$v/user/register",
                 request,
@@ -30,7 +31,7 @@ class UserAPIController {
     @PostMapping("/login")
     fun userLogin(@RequestBody request: String, @PathVariable("v") v: String, response: HttpServletResponse): ResponseJSON {
         // Login
-        val resp = RestJSONHelper.restPostHelper(
+        val resp = RestJSONHelper.restPost(
                 restTemplate,
                 "http://${ServiceName.nurupoMovieUsers}/$v/user/login",
                 request,
@@ -44,8 +45,8 @@ class UserAPIController {
                     val token = data["token"]
                     if (userId != null && token != null) {
                         // Save cookies
-                        response.addCookie(Cookie(UserAPIConfig.cookieUserIdKey, userId.toString()).apply { maxAge = UserAPIConfig.cookieMaxAge })
-                        response.addCookie(Cookie(UserAPIConfig.cookieUserTokenKey, token.toString()).apply { maxAge = UserAPIConfig.cookieMaxAge })
+                        response.addCookie(Cookie(UserAPIConfig.cookieUserIdKey, userId.toString()).apply { maxAge = UserAPIConfig.cookieMaxAge; path = "/"})
+                        response.addCookie(Cookie(UserAPIConfig.cookieUserTokenKey, token.toString()).apply { maxAge = UserAPIConfig.cookieMaxAge; path = "/" })
                         ResponseJSON(0, mapOf("userId" to userId))
                     } else {
                         ResponseJSON(-2, msg = "WTF: Id or token is bad")
@@ -66,7 +67,7 @@ class UserAPIController {
             @CookieValue(UserAPIConfig.cookieUserIdKey, defaultValue = "-1") userId: String?,
             @CookieValue(UserAPIConfig.cookieUserTokenKey, defaultValue = "") token: String?,
             @PathVariable("v") v: String): ResponseJSON {
-        return ResponseJSON(0, mapOf("login" to if (loginValid(userLoginCheckHelper(userId, token, v))) 1 else 0))
+        return ResponseJSON(0, mapOf("login" to if (UserHelper.loginValid(UserHelper.userLoginCheck(restTemplate, userId, token, v))) 1 else 0))
     }
 
     @GetMapping("/logout")
@@ -74,10 +75,10 @@ class UserAPIController {
             @CookieValue(UserAPIConfig.cookieUserIdKey, defaultValue = "-1") userId: String?,
             @CookieValue(UserAPIConfig.cookieUserTokenKey, defaultValue = "") token: String?,
             @PathVariable("v") v: String): ResponseJSON {
-        val resp = userLoginCheckHelper(userId, token, v)
+        val resp = UserHelper.userLoginCheck(restTemplate, userId, token, v)
 
-        if (loginValid(resp)) {
-            return RestJSONHelper.restGetHelper(
+        if (UserHelper.loginValid(resp)) {
+            return RestJSONHelper.restGet(
                     restTemplate,
                 "http://${ServiceName.nurupoMovieUsers}/$v/user/logout/$userId",
                 "URI: /$v/user/logout RETURN NULL"
@@ -88,22 +89,10 @@ class UserAPIController {
 
     @GetMapping("/id/{id}")
     fun getUserById(@PathVariable("id") id: Int, @PathVariable("v") v: String): ResponseJSON {
-        return RestJSONHelper.restGetHelper(
+        return RestJSONHelper.restGet(
                 restTemplate,
                 "http://${ServiceName.nurupoMovieUsers}/$v/user/id/$id",
                 "URI: /$v/user/logout RETURN NULL"
         )
-    }
-
-    private fun userLoginCheckHelper(id: String?, token: String?, v: String): ResponseJSON {
-        return RestJSONHelper.restGetHelper(
-                restTemplate,
-                "http://${ServiceName.nurupoMovieUsers}/$v/user/token/$id/$token",
-                "URI: /$v/user/token RETURN NULL"
-        )
-    }
-
-    private fun loginValid(resp: ResponseJSON?): Boolean {
-        return resp != null && resp.status == 0 && resp.obj == true
     }
 }

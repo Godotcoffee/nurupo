@@ -1,7 +1,8 @@
 package com.nurupo.movie.gateway.config
 
 object ServiceName {
-    val nurupoMovieUsers = "nurupo-movie-users"
-    val nurupoMovieSpark = "nurupo-movie-spark"
-    val nurupoMovieMovie = "nurupo-movie-movie"
+    const val nurupoMovieUsers = "nurupo-movie-users"
+    const val nurupoMovieRecommend = "nurupo-movie-recommend"
+    const val nurupoMovieMovie = "nurupo-movie-movie"
+    const val nurupoMovieHistory = "nurupo-movie-history"
 }

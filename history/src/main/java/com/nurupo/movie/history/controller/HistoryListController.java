@@ -27,13 +27,12 @@ public class HistoryListController {
     @PostMapping(value = "/add-item")
     public ResponseJSON addHistoryItem(@RequestBody History historyItem) {
         //userId和movieId相加为historyId
-        String historyId = historyItem.getUserId() + historyItem.getMovieId();
-        if (historyDAO.findById(historyId).isPresent()) {
+        //String historyId = historyItem.getUserId() + historyItem.getMovieId();
+        if (historyDAO.findByUserIdAndMovieId(historyItem.getUserId(), historyItem.getMovieId()) != null) {
             return new ResponseJSON(1, null, "The history already exists");
         }
         long timestamp = System.currentTimeMillis() / 1000;
         historyItem.setTimestamp(timestamp);
-        historyItem.setHistoryId(historyId);
         historyDAO.save(historyItem);
         return new ResponseJSON(0, historyItem);
     }
@@ -42,12 +41,9 @@ public class HistoryListController {
     public ResponseJSON addHistoryList(@RequestBody History[] historyList) {
         List<History> newHistoryList = new ArrayList<>();
         long timestamp = System.currentTimeMillis() / 1000;
-        String historyId;
         for (History historyItem: historyList) {
-            historyId = historyItem.getUserId() + historyItem.getMovieId();
-            if (!historyDAO.findById(historyId).isPresent()) {
+            if (historyDAO.findByUserIdAndMovieId(historyItem.getUserId(), historyItem.getMovieId()) != null) {
                 historyItem.setTimestamp(timestamp);
-                historyItem.setHistoryId(historyId);
                 newHistoryList.add(historyItem);
                 historyDAO.save(historyItem);
             }
@@ -66,12 +62,8 @@ public class HistoryListController {
             @RequestParam("userId") int userId,
             @RequestParam("movieId") String movieId
     ) {
-        String historyId = userId + movieId;
-        if (!historyDAO.findById(historyId).isPresent()) {
-            return new ResponseJSON(1, null, "The history doesn't exist");
-        }
         History historyItem = historyDAO.findByUserIdAndMovieId(userId, movieId);
-        return new ResponseJSON(0, historyItem);
+        return new ResponseJSON(historyItem != null ? 0 : 1, historyItem);
     }
 
     @GetMapping(value = "/page-userId-timestamp")

@@ -20,7 +20,7 @@ class MovieAPIController {
     @GetMapping("/all")
     fun getAllMovie(httpReq: HttpServletRequest, @PathVariable("v") v: String): ResponseJSON {
         val query = httpReq.queryString
-        return RestJSONHelper.restGetHelper(
+        return RestJSONHelper.restGet(
                 restTemplate,
                 "http://${ServiceName.nurupoMovieMovie}/$v/movie/all?$query",
                 "URI: /$v/movie/all?$query RETURN NULL"
@@ -29,7 +29,7 @@ class MovieAPIController {
 
     @GetMapping("/type")
     fun getAllType(@PathVariable("v") v: String): ResponseJSON {
-        return RestJSONHelper.restGetHelper(
+        return RestJSONHelper.restGet(
                 restTemplate,
                 "http://${ServiceName.nurupoMovieMovie}/$v/movie/type",
                 "URI: /$v/movie/type RETURN NULL"
@@ -38,7 +38,7 @@ class MovieAPIController {
 
     @GetMapping("/init")
     fun initMovie(@PathVariable("v") v: String): ResponseJSON {
-        return RestJSONHelper.restGetHelper(
+        return RestJSONHelper.restGet(
                 restTemplate,
                 "http://${ServiceName.nurupoMovieMovie}/$v/movie/init",
                 "URI: /$v/movie/init RETURN NULL"

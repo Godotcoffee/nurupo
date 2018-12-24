@@ -1,23 +1,26 @@
 server:
-  port: 9003
+  port: 9001
 
 spring:
   application:
-    name: nurupo-movie-history
+    name: nurupo-movie-recommend
   #Database
   datasource:
-    url: jdbc:mysql://localhost:3306/nurupo_history?serverTimezone=GMT%2b8
+    url: jdbc:mysql://localhost:3306/nurupo_recommend?serverTimezone=GMT%2b8
     username: nurupo
     password: nurupo
   #JPA
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+  #Timezone
+  jackson:
+    time-zone: GMT+8
 
 eureka:
   client:
@@ -26,5 +29,5 @@ eureka:
 
 info:
   app:
-    name: History Management
-    author: YJP
+    name: Spark
+    author: Zero
