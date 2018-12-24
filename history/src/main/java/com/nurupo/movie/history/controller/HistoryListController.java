@@ -12,12 +12,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/v1/history", produces = {"application/json;charset=utf-8;"})
 public class HistoryListController {
@@ -31,7 +31,8 @@ public class HistoryListController {
         if (historyDAO.findById(historyId).isPresent()) {
             return new ResponseJSON(1, null, "The history already exists");
         }
-        historyItem.setTimestamp(new Timestamp(System.currentTimeMillis() / 1000));
+        Long timestamp = System.currentTimeMillis() / 1000;
+        historyItem.setTimestamp(timestamp);
         historyItem.setHistoryId(historyId);
         historyDAO.save(historyItem);
         return new ResponseJSON(0, historyItem);
@@ -40,12 +41,12 @@ public class HistoryListController {
     @PostMapping(value = "/add-list")
     public ResponseJSON addHistoryList(@RequestBody History[] historyList) {
         List<History> newHistoryList = new ArrayList<>();
-        Timestamp time = new Timestamp(System.currentTimeMillis() / 1000);
+        Long timestamp = System.currentTimeMillis() / 1000;
         String historyId;
         for (History historyItem: historyList) {
             historyId = historyItem.getUserId() + historyItem.getMovieId();
             if (!historyDAO.findById(historyId).isPresent()) {
-                historyItem.setTimestamp(time);
+                historyItem.setTimestamp(timestamp);
                 historyItem.setHistoryId(historyId);
                 newHistoryList.add(historyItem);
                 historyDAO.save(historyItem);
@@ -154,8 +155,7 @@ public class HistoryListController {
                 } else {
                     int userId = Integer.parseInt(tempStr[0]);
                     float rating = Float.parseFloat(tempStr[2]);
-                    Timestamp time = new Timestamp(System.currentTimeMillis() / 1000);
-                    History historyItem = new History(userId, tempStr[1], rating, time);
+                    History historyItem = new History(userId, tempStr[1], rating, Long.parseLong(tempStr[3]));
                     historyList.add(historyItem);
                 }
             }
