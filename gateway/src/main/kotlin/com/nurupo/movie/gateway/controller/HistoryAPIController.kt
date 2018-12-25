@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.client.RestTemplate
 import javax.servlet.http.HttpServletRequest
 
+@CrossOrigin
 @RestController
 @RequestMapping("/{v}/history", produces = ["application/json;charset=utf-8;"])
 class HistoryAPIController {
-    @LoadBalanced
+
     @Autowired
     lateinit var restTemplate: RestTemplate
 
@@ -29,8 +30,7 @@ class HistoryAPIController {
             RestJSONHelper.restPost(
                     restTemplate,
                     "http://${ServiceName.nurupoMovieHistory}/$v/history/add-item",
-                    requestBody,
-                    "URI: /$v/history/add-itemr RETURN NULL"
+                    requestBody
             )
         } else {
             ResponseJSON(400, null, "Invalid User Id")
@@ -43,8 +43,7 @@ class HistoryAPIController {
         val query = httpReq.queryString
         return RestJSONHelper.restGet(
                 restTemplate,
-                "http://${ServiceName.nurupoMovieHistory}/$v/history/item?$query",
-                "URI: /$v/history/item RETURN NULL"
+                "http://${ServiceName.nurupoMovieHistory}/$v/history/item?$query"
         )
     }
 
@@ -53,8 +52,7 @@ class HistoryAPIController {
         val query = httpReq.queryString
         return RestJSONHelper.restGet(
                 restTemplate,
-                "http://${ServiceName.nurupoMovieHistory}/$v/history/page-userId-timestamp?$query",
-                "URI: /$v/history/page-userId-timestamp RETURN NULL"
+                "http://${ServiceName.nurupoMovieHistory}/$v/history/page-userId-timestamp?$query"
         )
     }
 
@@ -63,8 +61,7 @@ class HistoryAPIController {
         val query = httpReq.queryString
         return RestJSONHelper.restGet(
                 restTemplate,
-                "http://${ServiceName.nurupoMovieHistory}/$v/history/page-userId-rating?$query",
-                "URI: /$v/history/page-userId-rating RETURN NULL"
+                "http://${ServiceName.nurupoMovieHistory}/$v/history/page-userId-rating?$query"
         )
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.http.MediaType
 import org.springframework.web.client.RestTemplate
 
 object RestJSONHelper {
-    fun restPost(restTemplate: RestTemplate, url: String, request: Any, nurupo: String): ResponseJSON {
+    fun restPost(restTemplate: RestTemplate, url: String, request: Any, nurupo: String = "POST: \"$url\" RETURN NULL"): ResponseJSON {
         return try {
             restTemplate.postForObject(
                     url,
@@ -15,18 +15,18 @@ object RestJSONHelper {
                     ResponseJSON::class.java
             ) ?: ResponseJSON(-254, msg = nurupo)
         } catch (e: Exception) {
-            ResponseJSON(-255, e.stackTrace, "Exception")
+            ResponseJSON(-255, mapOf("msg" to e.message, "trace" to e.stackTrace), "Exception")
         }
     }
 
-    fun restGet(restTemplate: RestTemplate, url: String, nurupo: String): ResponseJSON {
+    fun restGet(restTemplate: RestTemplate, url: String, nurupo: String = "GET: \"$url\" RETURN NULL"): ResponseJSON {
         return try {
             restTemplate.getForObject(
                     url,
                     ResponseJSON::class.java
             ) ?: ResponseJSON(-254, msg = nurupo)
         } catch (e: Exception) {
-            ResponseJSON(-255, e.stackTrace, "Exception")
+            ResponseJSON(-255, mapOf("msg" to e.message, "trace" to e.stackTrace), "Exception")
         }
     }
 }

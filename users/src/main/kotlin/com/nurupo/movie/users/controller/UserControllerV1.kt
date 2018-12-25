@@ -9,6 +9,7 @@ import com.nurupo.movie.users.entity.Token
 import com.nurupo.movie.users.entity.User
 import com.nurupo.movie.users.tools.IPasswordHash
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.ClassPathResource
 import org.springframework.data.domain.PageRequest
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
@@ -147,13 +148,13 @@ class UserControllerV1 {
 
     @GetMapping("/init")
     fun initData(): ResponseJSON {
-        val list = mutableListOf<User>()
-        for (i in 1..100) {
-
-            list.add(User(0, "Xueba$i", "12345", email = "88$i@qq.com")
-                    .also { it.hashedPassword = userPasswordHash.hash(it) })
+        ClassPathResource("data/username610.txt").file.forEachLine { line ->
+            userDao.save(
+                    User(0, line, "123456", "", "${line.toLowerCase()}@xueba.com").apply {
+                        hashedPassword = userPasswordHash.hash(this)
+                    }
+            )
         }
-        userDao.saveAll(list.asIterable())
         return ResponseJSON()
     }
 }

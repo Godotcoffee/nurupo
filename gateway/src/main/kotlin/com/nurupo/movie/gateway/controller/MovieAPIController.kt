@@ -13,17 +13,32 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/{v}/movie", produces = ["application/json;charset=utf-8;"])
 class MovieAPIController {
-    @LoadBalanced
+
     @Autowired
     lateinit var restTemplate: RestTemplate
+
+    @GetMapping("/id/{movieId}")
+    fun id(@PathVariable("movieId") movieId: String, @PathVariable("v") v: String): ResponseJSON {
+        return RestJSONHelper.restGet(
+                restTemplate,
+                "http://${ServiceName.nurupoMovieMovie}/$v/movie/id/$movieId"
+        )
+    }
+
+    @GetMapping("/ids/{movies}")
+    fun ids(@PathVariable("movies") movies: String, @PathVariable("v") v: String): ResponseJSON {
+        return RestJSONHelper.restGet(
+                restTemplate,
+                "http://${ServiceName.nurupoMovieMovie}/$v/movie/ids/$movies"
+        )
+    }
 
     @GetMapping("/all")
     fun getAllMovie(httpReq: HttpServletRequest, @PathVariable("v") v: String): ResponseJSON {
         val query = httpReq.queryString
         return RestJSONHelper.restGet(
                 restTemplate,
-                "http://${ServiceName.nurupoMovieMovie}/$v/movie/all?$query",
-                "URI: /$v/movie/all?$query RETURN NULL"
+                "http://${ServiceName.nurupoMovieMovie}/$v/movie/all?$query"
         )
     }
 
@@ -31,17 +46,7 @@ class MovieAPIController {
     fun getAllType(@PathVariable("v") v: String): ResponseJSON {
         return RestJSONHelper.restGet(
                 restTemplate,
-                "http://${ServiceName.nurupoMovieMovie}/$v/movie/type",
-                "URI: /$v/movie/type RETURN NULL"
-        )
-    }
-
-    @GetMapping("/init")
-    fun initMovie(@PathVariable("v") v: String): ResponseJSON {
-        return RestJSONHelper.restGet(
-                restTemplate,
-                "http://${ServiceName.nurupoMovieMovie}/$v/movie/init",
-                "URI: /$v/movie/init RETURN NULL"
+                "http://${ServiceName.nurupoMovieMovie}/$v/movie/type"
         )
     }
 }

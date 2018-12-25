@@ -8,8 +8,7 @@ object UserHelper {
     fun userLoginCheck(restTemplate: RestTemplate, id: String?, token: String?, v: String): ResponseJSON {
         return RestJSONHelper.restGet(
                 restTemplate,
-                "http://${ServiceName.nurupoMovieUsers}/$v/user/token/$id/$token",
-                "URI: /$v/user/token RETURN NULL"
+                "http://${ServiceName.nurupoMovieUsers}/$v/user/token/$id/$token"
         )
     }
     fun loginValid(resp: ResponseJSON?): Boolean {

@@ -24,8 +24,7 @@ class UserAPIController {
         return RestJSONHelper.restPost(
                 restTemplate,
                 "http://${ServiceName.nurupoMovieUsers}/$v/user/register",
-                request,
-                "URI: /$v/user/register RETURN NULL")
+                request)
     }
 
     @PostMapping("/login")
@@ -34,8 +33,7 @@ class UserAPIController {
         val resp = RestJSONHelper.restPost(
                 restTemplate,
                 "http://${ServiceName.nurupoMovieUsers}/$v/user/login",
-                request,
-                "URI: /$v/user/login RETURN NULL"
+                request
         )
         try {
             if (resp.status == 0) {
@@ -67,7 +65,9 @@ class UserAPIController {
             @CookieValue(UserAPIConfig.cookieUserIdKey, defaultValue = "-1") userId: String?,
             @CookieValue(UserAPIConfig.cookieUserTokenKey, defaultValue = "") token: String?,
             @PathVariable("v") v: String): ResponseJSON {
-        return ResponseJSON(0, mapOf("login" to if (UserHelper.loginValid(UserHelper.userLoginCheck(restTemplate, userId, token, v))) 1 else 0))
+        return ResponseJSON(0, mapOf(
+                "login" to if (UserHelper.loginValid(UserHelper.userLoginCheck(restTemplate, userId, token, v))) 1 else 0,
+                "userId" to userId?.toIntOrNull()))
     }
 
     @GetMapping("/logout")
@@ -80,8 +80,7 @@ class UserAPIController {
         if (UserHelper.loginValid(resp)) {
             return RestJSONHelper.restGet(
                     restTemplate,
-                "http://${ServiceName.nurupoMovieUsers}/$v/user/logout/$userId",
-                "URI: /$v/user/logout RETURN NULL"
+                "http://${ServiceName.nurupoMovieUsers}/$v/user/logout/$userId"
             )
         }
         return ResponseJSON(0, msg = "No login")
@@ -91,8 +90,7 @@ class UserAPIController {
     fun getUserById(@PathVariable("id") id: Int, @PathVariable("v") v: String): ResponseJSON {
         return RestJSONHelper.restGet(
                 restTemplate,
-                "http://${ServiceName.nurupoMovieUsers}/$v/user/id/$id",
-                "URI: /$v/user/logout RETURN NULL"
+                "http://${ServiceName.nurupoMovieUsers}/$v/user/id/$id"
         )
     }
 }

@@ -11,5 +11,5 @@ public interface UserRepository extends JpaRepository<User, Integer>{
      * @param userId
      * @return
      */
-    public List<User> findByUserId(String userId);
+    public List<User> findAllByUserId(String userId);
 }

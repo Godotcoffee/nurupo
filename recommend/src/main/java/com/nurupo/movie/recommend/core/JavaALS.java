@@ -62,7 +62,7 @@ public class JavaALS {
         }
 
         public static Rating parseRating(String str) {
-            String[] fields = str.split("::");
+            String[] fields = str.split(",");
             if (fields.length != 4) {
                 throw new IllegalArgumentException("Each line must contain 4 fields");
             }
@@ -75,13 +75,13 @@ public class JavaALS {
     }
     // $example off$
 
-    public List<User> getRecommend() throws Exception {
+    public List<User> getRecommend(String filePath) throws Exception {
         List<User> list=new ArrayList<>();
 
-        Resource resource = new ClassPathResource("data/sample_movielens_ratings.txt");
+        //Resource resource = new ClassPathResource("data/sample_movielens_ratings.txt");
         // $example on$
         JavaRDD<Rating> ratingsRDD = spark
-                .read().textFile(resource.getFile().getAbsolutePath()).javaRDD()
+                .read().textFile(filePath).javaRDD()
                 .map(Rating::parseRating);
         Dataset<Row> ratings = spark.createDataFrame(ratingsRDD, Rating.class);
         Dataset<Row>[] splits = ratings.randomSplit(new double[]{0.8, 0.2});
@@ -128,7 +128,7 @@ public class JavaALS {
             String movieId= row.get(1).toString();
             user.setUserId(userId);
             user.setMovieId(movieId);
-           list.add( user);
+            list.add( user);
         }
         return list;
     }
