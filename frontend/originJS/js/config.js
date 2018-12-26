@@ -2,6 +2,7 @@ const connectConfig = {
     ip: "192.168.0.131",
     // ip: "localhost",
     port: "8999"
+    // port: "9002"
 };
 
 const historyConfig = {
@@ -13,6 +14,7 @@ const urlConfig = {
     allMovies: "/v1/movie/all",
     oneMovie: "/v1/movie/id",
     arrayMovie: "/v1/movie/ids",
+    searchMovie: "/v1/movie/search",
     allType: "/v1/movie/type",
     register: "/v1/user/register",
     login: "/v1/user/login",

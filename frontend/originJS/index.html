@@ -191,6 +191,10 @@
 
             isLogin();
             updatePage(0, yearType, genresType);
+
+            $('#to-search').click(function(){
+                $(location).attr('href', '/search.html?keyword=' + $('#find_desc').val().trim());
+            });
         });
     </script>
 </head>
@@ -256,7 +260,7 @@
                         Nurupo
                     </h1>
                 </div>
-                <form method="get" action="/search" id="header_find_form" class="business-search-form main-search yform u-space-b0 js-business-search-form"
+                <form method="get" id="header_find_form" class="business-search-form main-search yform u-space-b0 js-business-search-form"
                     role="search">
                     <div class="arrange arrange--equal arrange--stack-small">
                         <div class="arrange_unit">
@@ -264,7 +268,7 @@
                                 <label class="pseudo-input business-search-form_input business-search-form_input--find"
                                     for="find_desc">
                                     <div class="pseudo-input_wrapper">
-                                        <span class="pseudo-input_text business-search-form_input-text">Find</span>
+                                        <span class="pseudo-input_text business-search-form_input-text" id="to-search" style="cursor: pointer">Find</span>
                                         <span class="pseudo-input_field-holder">
                                             <input autocomplete="off" id="find_desc" maxlength="64" name="find_desc"
                                                 placeholder="Toy Story, Jumanji…" value="" class="pseudo-input_field business-search-form_input-field"

@@ -14,6 +14,8 @@ interface IMovieDao: JpaRepository<Movie, String> {
 
     fun findAllByGenresContaining(genres: String): List<Movie>
 
+    fun findAllByNameContaining(name: String, pageable: Pageable): Page<Movie>
+
     @Query("SELECT DISTINCT m.year FROM Movie m ORDER BY m.year")
     fun findDistinctYearType(): List<Int>
 

@@ -143,6 +143,20 @@ public class MovieListController {
         return new ResponseJSON(0, result);
     }
 
+    @GetMapping(value = "/search")
+    public ResponseJSON getSearch(
+            @RequestParam(value = "keyword", defaultValue = "") String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "pageSize", defaultValue = "0") int pageSize) {
+        page = Math.max(page, 0);
+        pageSize = Math.min(Math.max(pageSize, 12), MovieConfig.MAX_PAGE_SIZE);
+        Map<String, Object> result = new LinkedHashMap<>();
+        Page<Movie> movieList = movieDao.findAllByNameContaining(keyword, PageRequest.of(page, pageSize));
+        result.put("movies", movieList);
+
+        return new ResponseJSON(0, result);
+    }
+
     @GetMapping(value = "/init")
     public ResponseJSON initMovie() {
         Resource resource = new ClassPathResource("data/movies.csv");

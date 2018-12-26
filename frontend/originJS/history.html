@@ -66,7 +66,12 @@
                 }
             }
 
-            function createHistoryList(movieIds) {
+        // <tr>
+        //     <td>Mark</td>
+        //     <td>Otto</td>
+        //     <td>@mdo</td>
+        //     </tr>
+            function createHistoryList(movieIds, ratingMap) {
                 $('#h-history').empty();
                 $.ajax({
                     type: "GET",
@@ -77,10 +82,22 @@
                     success: function(data) {
                         let historyList = data['obj']['movies'];
                         $(historyList).each(function(i, n) {
-                            let liHistory = $('<li class="list-group-item"></li>');
-                            let aHistory = $('<a href="movie.html?id=' + n['id'] + '"></a>').text(n['movieName']);
-                            liHistory.append(aHistory);
-                            $('#h-history').append(liHistory);
+                            // let liHistory = $('<li class="list-group-item"></li>');
+                            // let aHistory = $('<a href="movie.html?id=' + n['id'] + '"></a>').text(n['movieName']);
+                            // liHistory.append(aHistory);
+                            // $('#h-history').append(liHistory);
+                            if(ratingMap.get(n['id']) != undefined) {
+                                let tr = $('<tr></tr>');
+                                let movieNameTd = $('<td></td>');
+                                movieNameTd.append($('<a href="movie.html?id=' + n['id'] + '"></a>').text(n['movieName']));
+                                let ratingsTd = $('<td></td>').text(ratingMap.get(n['id'])['rating']);
+                                let ratingTime = new Date(ratingMap.get(n['id'])['timestamp'] * 1000);
+                                let timeTd = $('<td></td>').text(ratingTime.toLocaleDateString());
+                                tr.append(movieNameTd);
+                                tr.append(ratingsTd);
+                                tr.append(timeTd);
+                                $('#h-history').append(tr);
+                            }
                         });
                     },
                     error: function(xmlHttpRequest, textStatus) {
@@ -130,14 +147,16 @@
                             let nextTotal = data['obj']['historyPage']['totalPages'];
                             let historyList = data['obj']['historyPage']['content'];
                             let movieIds = '';
+                            let ratingMap = new Map();
                             historyList.forEach(function(o, i) {
                                 movieIds += o['movieId'];
                                 if (i != historyList.length - 1) {
                                     movieIds += ',';
                                 }
+                                ratingMap.set(o['movieId'], o);
                             });
                             createNextLi(userId, nextTotal, curIndex);
-                            createHistoryList(movieIds);
+                            createHistoryList(movieIds, ratingMap);
                         }
                     },
                     error: function(xmlHttpRequest, textStatus) {
@@ -198,6 +217,7 @@
     </div>
     <div class="container">
         <div class="clearfix">
+            <h3 style="float: left;display: inline">History</h3>
             <div class="switch no-show">
                 <input type="radio" class="switch-input" name="view2" value="time" id="rating-time" checked>
                 <label for="rating-time" class="switch-label switch-label-off">Time</label>
@@ -206,20 +226,21 @@
                 <span class="switch-selection"></span>
             </div>
         </div>
-        <ul class="list-group list-group-flush" id="h-history">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Movie Name</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Time</th>
+                </tr>
+            </thead>
+            <tbody id="h-history">
 
-        </ul>
+            </tbody>
+        </table>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center" id="nextList">
-                <!--<li class="page-item disabled">-->
-                <!--<a class="page-link" href="#" tabindex="-1">Previous</a>-->
-                <!--</li>-->
-                <!--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
-                <!--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
-                <!--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
-                <!--<li class="page-item">-->
-                <!--<a class="page-link" href="#">Next</a>-->
-                <!--</li>-->
+
             </ul>
         </nav>
     </div>
