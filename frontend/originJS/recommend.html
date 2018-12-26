@@ -11,21 +11,6 @@
     <title>movie</title>
     <script>
         $(document).ready(function() {
-            let isSortTime = true;
-            $('#rating-time').change(function() {
-                isSortTime = true;
-                let userId = localStorage.getItem('userId');
-                let userIdObj = JSON.parse(userId);
-
-                loadHistory(userIdObj.data);
-            });
-            $('#rating-score').change(function() {
-                isSortTime = false;
-                let userId = localStorage.getItem('userId');
-                let userIdObj = JSON.parse(userId);
-
-                loadHistory(userIdObj.data);
-            });
             function isLogin() {
                 let userId = localStorage.getItem('userId');
                 let userIdObj = JSON.parse(userId);
@@ -64,91 +49,6 @@
                     });
                     loadHistory(userIdObj.data);
                 }
-            }
-
-            function createHistoryList(movieIds) {
-                $('#h-history').empty();
-                $.ajax({
-                    type: "GET",
-                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.arrayMovie + "/" + movieIds,
-                    headers: {
-                        "Content-Type": "application/json;charset=utf-8"
-                    },
-                    success: function(data) {
-                        let historyList = data['obj']['movies'];
-                        $(historyList).each(function(i, n) {
-                            let liHistory = $('<li class="list-group-item"></li>');
-                            let aHistory = $('<a href="movie.html?id=' + n['id'] + '"></a>').text(n['movieName']);
-                            liHistory.append(aHistory);
-                            $('#h-history').append(liHistory);
-                        });
-                    },
-                    error: function(xmlHttpRequest, textStatus) {
-                        $('#h-history').empty();
-                        $('#h-history').append($('<h3 class="mx-auto"></h3>').text('No movies'));
-                    }
-                });
-            }
-
-            function createNextLi(userId, len, curIndex) {
-                $('#nextList').empty();
-                for(let i = 0; i < len; i++) {
-                    if (Math.abs(i - curIndex) > 6) {
-                        continue;
-                    }
-
-                    let pageA = $('<a class="page-link h-page-item"></a>').text(i + 1);
-                    if (Math.abs(i - curIndex) == 6) {
-                        pageA.text('...');
-                    }
-                    let pageLi = $('<li class="page-item" ></li>');
-                    pageLi.append(pageA);
-                    if (i == curIndex) {
-                        pageLi.addClass('disabled');
-                    }
-                    pageLi.on('click', function(){
-                        updatePage(userId, i);
-                    });
-
-                    $('#nextList').append(pageLi);
-                }
-            }
-
-            function updatePage(userId, curIndex) {
-                let url = "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.allHistoryRating + "?userId=" + userId + "&pageSize=" + pageConfig.historySize + "&page=" + curIndex;
-                if (isSortTime) {
-                    url = "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.allHistoryTime + "?userId=" + userId + "&pageSize=" + pageConfig.historySize + "&page=" + curIndex;
-                }
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    headers: {
-                        "Content-Type": "application/json;charset=utf-8"
-                    },
-                    success: function(data) {
-                        if (data['status'] == 0) {
-                            let nextTotal = data['obj']['historyPage']['totalPages'];
-                            let historyList = data['obj']['historyPage']['content'];
-                            let movieIds = '';
-                            historyList.forEach(function(o, i) {
-                                movieIds += o['movieId'];
-                                if (i != historyList.length - 1) {
-                                    movieIds += ',';
-                                }
-                            });
-                            createNextLi(userId, nextTotal, curIndex);
-                            createHistoryList(movieIds);
-                        }
-                    },
-                    error: function(xmlHttpRequest, textStatus) {
-                        $('#h-history').empty();
-                        $('#h-history').append($('<h3 class="mx-auto"></h3>').text('No movies'));
-                    }
-                });
-            }
-
-            function loadHistory(id) {
-                updatePage(id, 0);
             }
 
             isLogin();
