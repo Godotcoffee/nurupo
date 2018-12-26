@@ -94,3 +94,11 @@ ul.header-nav.hero-header_nav {
 #h-history {
     margin-bottom: 20px;
 }
+
+.h-alert {
+    position: absolute;
+    top: 40px;
+    width: 400px;
+    right: 0px;
+    padding: 5px;
+}

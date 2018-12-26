@@ -76,11 +76,15 @@
                     headers: {
                         "Content-Type": "application/json;charset=utf-8"
                     },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
                     data: JSON.stringify({
                         "username": $("#username").val(),
                         "password": $("#password").val()
                     }),
-                    success: function(data) {
+                    success: function(data, status, xhr) {
                         if(data['status'] == 0) {
                             localStorage.setItem('userId', JSON.stringify({data: data['obj']['userId'], time: new Date().getTime()}));
                             getUserInfo(data['obj']['userId']);
