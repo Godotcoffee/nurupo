@@ -60,6 +60,9 @@
                         "password": $("#password").val(),
                         "email": $("#email").val()
                     }),
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     success: function(data) {
                         if(data['status'] == 0) {
                             errorHint(true, 'You have been signed up successfully!');

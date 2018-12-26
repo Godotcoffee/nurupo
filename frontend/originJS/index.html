@@ -28,17 +28,19 @@
                     $('#header-log-out').on('click', function(){
                         $.ajax({
                             type: "GET",
-                            // url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.logout + "/" + userIdObj.data,
-                            url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.loginCheck,
+                            url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.logout + "/" + userIdObj.data,
+                            // url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.loginCheck,
                             headers: {
                                 "Content-Type": "application/json;charset=utf-8"
                             },
+                            xhrFields: {
+                                withCredentials: true
+                            },
                             success: function(data) {
                                 console.log(data);
-                                // localStorage.removeItem('userId');
-                                // localStorage.removeItem('username');
-                                // $(location).attr('href', '/login.html');
-
+                                localStorage.removeItem('userId');
+                                localStorage.removeItem('username');
+                                $(location).attr('href', '/login.html');
                             },
                             error: function(xmlHttpRequest, textStatus) {
                                 localStorage.removeItem('userId');
@@ -168,6 +170,9 @@
                     headers: {
                         "Content-Type": "application/json;charset=utf-8"
                     },
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     success: function(data) {
                         if (data['status'] == 0) {
                             let movieList = data['obj']['movies']['content'];
@@ -235,6 +240,8 @@
                                 <a class="dropdown-item" href="#">Info</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/history">History</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/recommend">Recommendation</a>
                             </div>
                             <li class="header-nav_item u-space-r0 js-analytics-click" id="header-log-out">
                                 <a class="ybtn ybtn--primary header-nav_button nowrap">Log out</a>

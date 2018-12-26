@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="css/homepage-main-pkg.css">
     <link rel="stylesheet" href="css/all.css">
     <link rel="stylesheet" href="css/history.css">
+    <link rel="stylesheet" href="css/movie.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="js/config.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -47,8 +48,75 @@
                             }
                         });
                     });
-                    loadHistory(userIdObj.data);
+                    loadRecommend(userIdObj.data);
                 }
+            }
+
+            function createMovieCard(data) {
+                $('#recommendList').empty();
+                $(data).each(function(i, n) {
+                    let outDiv = $('<div class="col-sm-2"></div>');
+                    let cardDiv = $('<a class="card h-movie-card" href="movie.html?id=' + n['id'] + '"></a>');
+                    let coverImg = $('<img src="' + n['cover'] + '" alt="' + n['movieName'] + '" class="card-img-top"/>');
+                    let cardBodyDiv = $('<div class="card-body h-card-body"></div>');
+                    let nameP = $('<p class="card-text"></p>').text(n['movieName']);
+
+                    cardDiv.append(coverImg);
+                    cardBodyDiv.append(nameP);
+                    cardDiv.append(cardBodyDiv);
+                    outDiv.append(cardDiv);
+                    $('#recommendList').append(outDiv);
+                });
+            }
+
+            function getMovieInfo(movieIds) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.arrayMovie + "/" + movieIds,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    success: function(data) {
+                        if (data['status'] == 0) {
+                            let movieList = data['obj']['movies'];
+                            createMovieCard(movieList);
+                        }
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+
+                    }
+                });
+            }
+
+            function loadRecommend(userId) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://" + connectConfig.ip + ":" + connectConfig.port + urlConfig.recommend + "/" + userId,
+                    headers: {
+                        "Content-Type": "application/json;charset=utf-8"
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function(data) {
+                        if(data['status'] == 0) {
+                            let movies = data['obj'];
+                            let movieIds = '';
+                            movies.forEach(function(o, i) {
+                                movieIds += o['movieId'];
+                                if (i != movies.length - 1) {
+                                    movieIds += ',';
+                                }
+                            });
+                            getMovieInfo(movieIds);
+                        } else {
+
+                        }
+                    },
+                    error: function(xmlHttpRequest, textStatus) {
+
+                    }
+                });
             }
 
             isLogin();
@@ -83,6 +151,8 @@
                                     <a class="dropdown-item" href="#">Info</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/history">History</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/recommend">Recommendation</a>
                                 </div>
                                 <li class="header-nav_item u-space-r0 js-analytics-click" id="header-log-out">
                                     <a class="ybtn ybtn--primary header-nav_button nowrap">Log out</a>
@@ -95,31 +165,11 @@
         </div>
     </div>
     <div class="container">
-        <div class="clearfix">
-            <div class="switch no-show">
-                <input type="radio" class="switch-input" name="view2" value="time" id="rating-time" checked>
-                <label for="rating-time" class="switch-label switch-label-off">Time</label>
-                <input type="radio" class="switch-input" name="view2" value="score" id="rating-score">
-                <label for="rating-score" class="switch-label switch-label-on">Rating</label>
-                <span class="switch-selection"></span>
-            </div>
-        </div>
-        <ul class="list-group list-group-flush" id="h-history">
+        <h3>Recommendation</h3>
+        <hr>
+        <div class="row" id="recommendList">
 
-        </ul>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center" id="nextList">
-                <!--<li class="page-item disabled">-->
-                <!--<a class="page-link" href="#" tabindex="-1">Previous</a>-->
-                <!--</li>-->
-                <!--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
-                <!--<li class="page-item"><a class="page-link" href="#">2</a></li>-->
-                <!--<li class="page-item"><a class="page-link" href="#">3</a></li>-->
-                <!--<li class="page-item">-->
-                <!--<a class="page-link" href="#">Next</a>-->
-                <!--</li>-->
-            </ul>
-        </nav>
+        </div>
     </div>
 </body>
 </html>

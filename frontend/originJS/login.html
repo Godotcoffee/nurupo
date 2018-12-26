@@ -54,6 +54,9 @@
                     headers: {
                         "Content-Type": "application/json;charset=utf-8"
                     },
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     success: function(data) {
                         if(data['status'] == 0) {
                             errorHint(true, "You have been signed up successfully!");

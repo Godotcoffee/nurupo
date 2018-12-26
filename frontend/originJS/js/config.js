@@ -22,7 +22,8 @@ const urlConfig = {
     oneHistory: "/v1/history/item",
     ratingMovie: "/v1/history/add-item",
     allHistoryTime: "/v1/history/page-userId-timestamp",
-    allHistoryRating: "/v1/history/page-userId-rating"
+    allHistoryRating: "/v1/history/page-userId-rating",
+    recommend: "/v1/recommend/id"
 };
 
 const pageConfig = {
