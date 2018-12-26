@@ -49,4 +49,14 @@ class MovieAPIController {
                 "http://${ServiceName.nurupoMovieMovie}/$v/movie/type"
         )
     }
+
+    @GetMapping("/search")
+    fun movieSearch(httpReq: HttpServletRequest, @PathVariable("v") v: String): ResponseJSON {
+        val query = httpReq.queryString
+        return RestJSONHelper.restGet(
+                restTemplate,
+                "http://${ServiceName.nurupoMovieMovie}/$v/movie/search?$query"
+        )
+    }
+
 }
