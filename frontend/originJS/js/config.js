@@ -17,6 +17,7 @@ const urlConfig = {
     register: "/v1/user/register",
     login: "/v1/user/login",
     logout: "/v1/user/logout",
+    loginCheck: "/v1/user/loginCheck",
     userInfo: "/v1/user/id",
     oneHistory: "/v1/history/item",
     ratingMovie: "/v1/history/add-item",
