@@ -16,6 +16,7 @@
     <description>User Management Module</description>
 
     <properties>
+        <start-class>com.nurupo.movie.users.UsersApplicationKt</start-class>
         <java.version>1.8</java.version>
         <kotlin.version>1.2.71</kotlin.version>
         <spring-cloud.version>Greenwich.M3</spring-cloud.version>
