@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.client.RestTemplate
 import javax.servlet.http.HttpServletRequest
 
-@CrossOrigin
+@CrossOrigin("*", allowCredentials = "true")
 @RestController
 @RequestMapping("/{v}/history", produces = ["application/json;charset=utf-8;"])
 class HistoryAPIController {

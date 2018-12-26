@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
-@CrossOrigin
+@CrossOrigin("*", allowCredentials = "true")
 @RestController
 @RequestMapping("/{v}/user", produces = ["application/json;charset=utf-8;"])
 class UserAPIController {
@@ -43,8 +43,10 @@ class UserAPIController {
                     val token = data["token"]
                     if (userId != null && token != null) {
                         // Save cookies
-                        response.addCookie(Cookie(UserAPIConfig.cookieUserIdKey, userId.toString()).apply { maxAge = UserAPIConfig.cookieMaxAge; path = "/"})
-                        response.addCookie(Cookie(UserAPIConfig.cookieUserTokenKey, token.toString()).apply { maxAge = UserAPIConfig.cookieMaxAge; path = "/" })
+                        response.addCookie(Cookie(UserAPIConfig.cookieUserIdKey, userId.toString()).apply {
+                            maxAge = UserAPIConfig.cookieMaxAge; path = "/" })
+                        response.addCookie(Cookie(UserAPIConfig.cookieUserTokenKey, token.toString()).apply {
+                            maxAge = UserAPIConfig.cookieMaxAge; path = "/" })
                         ResponseJSON(0, mapOf("userId" to userId))
                     } else {
                         ResponseJSON(-2, msg = "WTF: Id or token is bad")
