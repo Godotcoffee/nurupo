@@ -96,6 +96,7 @@
                             let movieInfo = data['obj']['movie'];
                             $('.h-movie-name').text(movieInfo['movieName']);
                             $('.h-movie-cover').find('img').attr('src', movieInfo['cover']);
+			    //$('.h-movie-cover').find('img').attr('src', "image/cover/" + movieInfo['id'] + ".jpg");
                             $('#info-year').text(movieInfo['year']);
                             $('#info-genres').text(movieInfo['genres']);
                         }
