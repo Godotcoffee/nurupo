@@ -17,9 +17,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 // $example on$
 // $example off$
@@ -75,7 +73,7 @@ public class JavaALS {
     }
     // $example off$
 
-    public List<User> getRecommend(String filePath) throws Exception {
+    public Map.Entry<List<User>, Double> getRecommend(String filePath) throws Exception {
         List<User> list=new ArrayList<>();
 
         //Resource resource = new ClassPathResource("data/sample_movielens_ratings.txt");
@@ -130,6 +128,6 @@ public class JavaALS {
             user.setMovieId(movieId);
             list.add( user);
         }
-        return list;
+        return new AbstractMap.SimpleEntry<>(list, rmse);
     }
 }
