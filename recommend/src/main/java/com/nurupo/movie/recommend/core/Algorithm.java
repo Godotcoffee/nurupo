@@ -26,22 +26,25 @@ public class Algorithm {
     @Autowired
     private RestTemplate restTemplate;
 
-    public boolean javaALSAlgorithm() {
+    public double javaALSAlgorithm() {
         File file = null;
+        double err = -1;
         try {
             file = getHistoryDataFile();
             if (file != null) {
-                List<User> list = javaALS.getRecommend(file.getAbsolutePath());
+                Map.Entry<List<User>, Double> result = javaALS.getRecommend(file.getAbsolutePath());
+                List<User> list = result.getKey();
                 if (list != null && list.size() > 0) {
                     userRepository.deleteAll();
                     userRepository.saveAll(list);
 
                 }
+                err = result.getValue() != null ? result.getValue() : err;
             }
-            return true;
+            return err;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return err;
         } finally {
             if (file != null) {
                 file.delete();
