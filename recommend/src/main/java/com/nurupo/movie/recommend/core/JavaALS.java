@@ -73,7 +73,7 @@ public class JavaALS {
     }
     // $example off$
 
-    public Map.Entry<List<User>, Double> getRecommend(String filePath) throws Exception {
+    public Map.Entry<List<User>, Double> getRecommend(String filePath, int maxIter) throws Exception {
         List<User> list=new ArrayList<>();
 
         //Resource resource = new ClassPathResource("data/sample_movielens_ratings.txt");
@@ -88,7 +88,7 @@ public class JavaALS {
 
         // Build the recommendation model using ALS on the training data
         ALS als = new ALS()
-                .setMaxIter(5)
+                .setMaxIter(maxIter)
                 .setRegParam(0.01)
                 .setUserCol("userId")
                 .setItemCol("movieId")

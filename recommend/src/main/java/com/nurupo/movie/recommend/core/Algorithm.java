@@ -26,13 +26,13 @@ public class Algorithm {
     @Autowired
     private RestTemplate restTemplate;
 
-    public double javaALSAlgorithm() {
+    public double javaALSAlgorithm(int maxIter) {
         File file = null;
         double err = -1;
         try {
             file = getHistoryDataFile();
             if (file != null) {
-                Map.Entry<List<User>, Double> result = javaALS.getRecommend(file.getAbsolutePath());
+                Map.Entry<List<User>, Double> result = javaALS.getRecommend(file.getAbsolutePath(), maxIter);
                 List<User> list = result.getKey();
                 if (list != null && list.size() > 0) {
                     userRepository.deleteAll();

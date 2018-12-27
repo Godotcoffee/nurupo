@@ -7,6 +7,7 @@ import com.nurupo.movie.recommend.entity.ResponseJSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.LinkedHashMap;
@@ -19,8 +20,8 @@ public class HelloController {
     Algorithm algo;
 
     @GetMapping("/task")
-    public ResponseJSON hello(){
-        double err = algo.javaALSAlgorithm();
+    public ResponseJSON hello(@RequestParam(value = "iter", defaultValue = "5") int iter){
+        double err = algo.javaALSAlgorithm(iter);
         Map<String, Double> map = new LinkedHashMap<>();
         map.put("err", err);
         return new ResponseJSON(err >= 0 ? 0 : 1, map);
