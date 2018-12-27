@@ -1,13 +1,8 @@
 const connectConfig = {
-    ip: "192.168.0.131",
-    // ip: "localhost",
+    // ip: "192.168.0.131",
+    ip: "localhost",
     port: "8999"
     // port: "9002"
-};
-
-const historyConfig = {
-    ip: "localhost",
-    port: "9003"
 };
 
 const urlConfig = {
