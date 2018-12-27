@@ -1,0 +1,30 @@
+@startuml
+
+package com.nurupo.movie.movie.entity {
+    class Movie {
+        -id: String
+        -name: String
+        -year: Int
+        -genres: String
+        -cover: String
+        +getter()
+        +setter()
+    }
+}
+
+package com.nurupo.movie.movie.dao {
+    interface IMovieDao {
+        +findByName(name: String): Movie
+        +findAllByYear(year: Int): List<Movie>
+        +findAllByGenresContaining(genres: String): List<Movie>
+        +findAllByNameContaining(name: String, pageable: Pageable): Page<Movie>
+        +findDistinctYearType(): List<Int>
+        +findDistinctGenresType(): List<String>
+        +findAllMovieByType(yearType: String, genresType: String, pageable: Pageable): Page<Movie>
+    }
+}
+
+JpaRepository <|-- IMovieDao
+IMovieDao ..> Movie
+
+@enduml

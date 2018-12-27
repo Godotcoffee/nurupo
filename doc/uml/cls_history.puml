@@ -1,0 +1,27 @@
+@startuml
+
+package com.nurupo.movie.history.entity {
+    class History {
+        -historyId: Int
+        -userId: Int
+        -movieId: String
+        -rating: Float
+        -timestamp: Long
+        +getter()
+        +setter()
+    }
+}
+
+package com.nurupo.movie.history.dao {
+    interface IHistoryDAO {
+        +History findByUserIdAndMovieId(userId: Int, movieId: String)
+        +findAllByUserIdOrderByTimestamp(userId: Int, pageable: Pageable): Page<History>
+        +findAllByUserIdOrderByRating(userId: Int, pageable: Pageable): Page<History>
+        +findAllByMovieIdOrderByTimestamp(movieId: String, pageable: Pageable): Page<History>
+    }
+}
+
+JpaRepository <|-- IHistoryDAO
+IHistoryDAO ..> History
+
+@enduml

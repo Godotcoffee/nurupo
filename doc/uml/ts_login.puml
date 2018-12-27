@@ -1,0 +1,55 @@
+@startuml
+
+actor Frontend as F
+participant Gateway as G
+participant ServiceDiscovery as D
+participant UserService as U
+participant AnyService as S
+
+autonumber
+
+F -> G : Login
+activate G
+G -> D : Discovery user service
+activate D
+D --> G : IP address of user service
+deactivate D
+G -> U : Login
+activate U
+U --> G : Return a response
+deactivate U
+G --> F : Return the response with set-cookie
+deactivate G
+
+F -> G : Request with cookie
+activate G
+
+G -> D : Discovery user service
+activate D
+D --> G : IP address of user service
+deactivate D
+
+G -> U : Authenticate
+activate U
+U --> G : Return a response
+deactivate U
+
+alt authentication fail
+G --> F: Return response with error
+
+else authentication success
+G -> D : Discovery user service
+activate D
+D --> G : IP address of user service
+deactivate D
+G -> S : Dispatch the request
+activate S
+S --> G : Return a response
+deactivate S
+G --> F : Return the response
+end
+
+deactivate G
+
+
+@enduml
