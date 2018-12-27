@@ -1,0 +1,24 @@
+@startuml
+
+actor Frontend as F
+participant Gateway as G
+participant ServiceDiscovery as D
+participant AnyService as S
+
+autonumber
+F -> G : Send a request
+activate G
+G -> D : Discovery a service
+activate D
+D --> G : IP address of the service
+deactivate D
+G -> S : Dispatch the request
+activate S
+S --> G : Return a response
+deactivate S
+G --> F : Return the response
+deactivate G
+
+
+
+@enduml

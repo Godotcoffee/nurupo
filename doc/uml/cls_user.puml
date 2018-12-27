@@ -1,0 +1,52 @@
+@startuml
+
+package com.nurupo.movie.user.Entity {
+    class User {
+        -id: Int
+        -username: String
+        -password: String
+        -hashedPassword: String
+        -email: String
+        -userStatus: Int
+        -registerDate: Date
+        +getter()
+        +setter()
+    }
+
+    class Token {
+        -id: Int
+        -tokenKey: UUID
+        -userId: Int
+        -startDate: Date
+        -durationDate: Duration
+        -logout: Boolean
+        +getter()
+        +setter()
+    }
+
+    class Login {
+        -username: String = ""
+        -password: String = ""
+        +getter()
+        +setter()
+    }
+}
+
+package com.nurupo.movie.user.Dao {
+    interface IUserDao {
+        +findByUsername(name: String): User
+        +findByEmail(email: String): User
+    }
+
+    interface ITokenDao {
+        +findByUserId(id: Int): Token
+    }
+}
+
+JpaRepository <|-- IUserDao
+JpaRepository <|-- ITokenDao
+
+IUserDao ..> User
+ITokenDao ..> Token
+
+@enduml
