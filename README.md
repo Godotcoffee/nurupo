@@ -1,7 +1,7 @@
 # Nurupo
 nurupo - ga
 # What's it
-It's a homework of MicroService Course (Cloud Computing) in Our University.
+It's a homework of MicroService Course (Cloud Computing) in our University.
 
 This is a very simple Movie Recommendation Website with Nodejs, Spring-boot, MySQL and Spark.
 
@@ -30,7 +30,7 @@ Change the config in `src/main/resources/application.yml` for each service.
 Using `Apache Maven 3.5.2` when testing
 
 ## Web
-Nodejs is required for Frontend.
+Nodejs is required for frontend.
 ```
 cd frontend/originJS  
 npm install && npm server run
