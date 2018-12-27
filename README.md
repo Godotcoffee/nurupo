@@ -1,5 +1,6 @@
 # Nurupo
-nurupo - ga
+nurupo  
+ga
 # What's it
 It's a homework of MicroService Course (Cloud Computing) in our University.
 
@@ -33,6 +34,6 @@ Using `Apache Maven 3.5.2` when testing
 Nodejs is required for frontend.
 ```
 cd frontend/originJS  
-npm install && npm server run
+npm install && npm run server
 ```
 Open browser and goto `http://localhost:7000`

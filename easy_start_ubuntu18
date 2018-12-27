@@ -1,0 +1,15 @@
+#!/bin/bash
+# ---------------------------------------------------
+# This script is for quickly starting all services
+# Dependency to the gnome-terminal in Ubuntu 18.04
+# ---------------------------------------------------
+
+HOME_ROOT=`pwd`
+SPRING_BOOT_RUN="mvn spring-boot:run;exec bash"
+TERMINAL_RUN="gnome-terminal --tab -- bash -c \"$SPRING_BOOT_RUN\""
+SERVICES=("eureka" "users" "movie" "history" "recommend" "gateway")
+
+for service in "${SERVICES[@]}"; do
+  cd $HOME_ROOT/$service && eval $TERMINAL_RUN
+done
+
